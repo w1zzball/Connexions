@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import Tile from './components/Tile.tsx'
 
@@ -16,7 +16,7 @@ const initTileSet: Tile[] = [
   { answer: "COLOR", text: "Red" },
   { answer: "COLOR", text: "Blue" },
   { answer: "COLOR", text: "Green" },
-  { answer: "COLOR", text: "sadsadasdadsassasdss" },
+  { answer: "COLOR", text: "Yellow" },
   { answer: "ANIMAL", text: "Dog" },
   { answer: "ANIMAL", text: "Cat" },
   { answer: "ANIMAL", text: "Horse" },
@@ -33,11 +33,35 @@ function App() {
   const [tileSet, setTileSet] = useState<Tile[]>(initTileSet);
   const [selected, setSelected] = useState<Tile[]>([]);
   const [solved, setSolved] = useState(0);
+  const [solvedTiles, setSolvedTiles] = useState<Tile[][]>([]);
 
-  const randomizeTiles = () => {
-    const shuffledTiles = [...tileSet].sort(() => Math.random() - 0.5);
-    setTileSet(shuffledTiles);
+  const shuffleTiles = () => {
+    const ShuffledTiles = [...tileSet].sort(() => Math.random() - 0.5);
+    setTileSet(ShuffledTiles);
   };
+  useEffect(() => {
+    shuffleTiles();
+  }, []);
+
+  const deselectAll = () => {
+    setSelected([]);
+  };
+
+  const submit = () => {
+    let answer = selected[0].answer;
+    let isCorrect: boolean = selected.reduce((acc, tile) =>
+      acc && tile.answer === answer
+      , true)
+    if (isCorrect) {
+      setSolvedTiles(old => (
+        [...old, selected]
+      ))
+      setTileSet(tileSet.filter(tile => !selected.includes(tile)));
+      setSolved(solved + 1);
+      deselectAll();
+    }
+
+  }
 
   const handleSelect = (tile: Tile) => {
     if (selected.includes(tile)) {
@@ -50,17 +74,22 @@ function App() {
   };
   return (
     <>
+      <div id="solved-container">
+
+      </div>
       <div id="board">
         {tileSet.map(tile => (
           <Tile key={tile.text}
             text={tile.text}
             selected={selected.includes(tile)}
-            handleSelect={()=>handleSelect(tile)}
-            />
+            handleSelect={() => handleSelect(tile)}
+          />
         ))}
       </div>
       <div id="button-container">
-        <button onClick={randomizeTiles}>Randomize Tiles</button>
+        <button onClick={shuffleTiles}>Shuffle</button>
+        <button className={selected.length < 1 ? 'disabled' : undefined} onClick={deselectAll}>Deselect All</button>
+        <button className={selected.length != 4 ? 'disabled' : undefined} onClick={submit}>submit</button>
       </div>
     </>
   )

@@ -13,3 +13,13 @@
   padding: 2rem;
   text-align: center;
 }
+#button-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+.disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}

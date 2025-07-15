@@ -5,7 +5,8 @@ export default function Tile({ text, selected = false,handleSelect }) {
 
   return (
     <div className="tile" style={{
-      backgroundColor: selected ? 'lightblue' : 'white',
+      backgroundColor: selected ? '#5A594E' : '#EFEFE6',
+      color: selected ? 'white' : '#121212',
     }}
 
       onClick={handleSelect}>
