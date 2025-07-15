@@ -1,5 +1,16 @@
 .tile{
   height:50px;
   width:50px;
-  background-color: red;
+  background-color: #EFEFE6;
+  color: #121212;
+  border-radius: 5%;
+  margin: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }    
+
+.selected{
+  background-color: #5A594E;
+  color: #F8F8F8;
+}
