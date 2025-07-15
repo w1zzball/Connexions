@@ -8,23 +8,23 @@ interface Tile {
 }
 
 const initTileSet: Tile[] = [
-  
-    { answer: "FRUIT", text: "Apple" },
-    { answer: "FRUIT", text: "Banana" },
-    { answer: "FRUIT", text: "Orange" },
-    { answer: "FRUIT", text: "Grape" },
-    { answer: "COLOR", text: "Red" },
-    { answer: "COLOR", text: "Blue" },
-    { answer: "COLOR", text: "Green" },
-    { answer: "COLOR", text: "sadsadasdadsassasdss" },
-    { answer: "ANIMAL", text: "Dog" },
-    { answer: "ANIMAL", text: "Cat" },
-    { answer: "ANIMAL", text: "Horse" },
-    { answer: "ANIMAL", text: "Cow" },
-    { answer: "COUNTRY", text: "France" },
-    { answer: "COUNTRY", text: "Japan" },
-    { answer: "COUNTRY", text: "Brazil" },
-    { answer: "COUNTRY", text: "Canada" },
+
+  { answer: "FRUIT", text: "Apple" },
+  { answer: "FRUIT", text: "Banana" },
+  { answer: "FRUIT", text: "Orange" },
+  { answer: "FRUIT", text: "Grape" },
+  { answer: "COLOR", text: "Red" },
+  { answer: "COLOR", text: "Blue" },
+  { answer: "COLOR", text: "Green" },
+  { answer: "COLOR", text: "sadsadasdadsassasdss" },
+  { answer: "ANIMAL", text: "Dog" },
+  { answer: "ANIMAL", text: "Cat" },
+  { answer: "ANIMAL", text: "Horse" },
+  { answer: "ANIMAL", text: "Cow" },
+  { answer: "COUNTRY", text: "France" },
+  { answer: "COUNTRY", text: "Japan" },
+  { answer: "COUNTRY", text: "Brazil" },
+  { answer: "COUNTRY", text: "Canada" },
 ];
 
 function App() {
@@ -52,7 +52,11 @@ function App() {
     <>
       <div id="board">
         {tileSet.map(tile => (
-          <Tile key={tile.text} text={tile.text} />
+          <Tile key={tile.text}
+            text={tile.text}
+            selected={selected.includes(tile)}
+            handleSelect={()=>handleSelect(tile)}
+            />
         ))}
       </div>
       <div id="button-container">

@@ -1,10 +1,14 @@
-import {useState} from "react";
+import { useState } from "react";
 import './Tile.css'
-export default function Tile({text}) {
-  const [isSolved, setIsSolved] = useState(false) 
+export default function Tile({ text, selected = false,handleSelect }) {
+  const [isSolved, setIsSolved] = useState(false)
 
-return(
-  <div className="tile">
-   <span>{text}</span> 
-  </div>)
+  return (
+    <div className="tile" style={{
+      backgroundColor: selected ? 'lightblue' : 'white',
+    }}
+
+      onClick={handleSelect}>
+      <span>{text}</span>
+    </div>)
 }
