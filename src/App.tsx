@@ -60,6 +60,8 @@ function App() {
       setSolved(solved + 1);
       deselectAll();
     }
+    else {
+    }
 
   }
 
