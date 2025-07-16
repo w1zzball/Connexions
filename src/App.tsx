@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion';
 import './App.css'
 import Tile from './components/Tile.tsx'
 import Row from './components/Row.tsx'
@@ -49,7 +50,7 @@ function App() {
   const shuffleTiles = () => {
     setTileSet(shuffleArray(tileSet));
   };
-  
+
   function shuffleArray<T>(array: T[]): T[] {
     return [...array].sort(() => Math.random() - 0.5);
   }
@@ -104,15 +105,25 @@ function App() {
                   tileString={tiles.map(tile => tile.text).join(', ')}
                 />
               ))}
-              {tileSet.map(tile => (
-                <Tile
-                  key={tile.text}
-                  text={tile.text}
-                  selected={selected.includes(tile)}
-                  shake={shakingTiles.has(tile.text)}
-                  handleSelect={() => handleSelect(tile)}
-                />
-              ))}
+              <AnimatePresence>
+                {tileSet.map(tile => (
+                  <motion.div
+                    key={tile.text}
+                    layout
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.8, opacity: 0 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                  >
+                    <Tile
+                      text={tile.text}
+                      selected={selected.includes(tile)}
+                      shake={shakingTiles.has(tile.text)}
+                      handleSelect={() => handleSelect(tile)}
+                    />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
             <div id="mistakes-counter">
               <p>Mistakes Remaining:  {"● ".repeat(lives)}</p>
