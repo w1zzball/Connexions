@@ -46,7 +46,6 @@ function App() {
   const [solvedTiles, setSolvedTiles] = useState<Tile[][]>([]);
   const [shakingTiles, setShakingTiles] = useState<Set<string>>(new Set());
   const [incorrectGuesses, setIncorrectGuesses] = useState<Tile[][]>([]);
-
   const shuffleTiles = () => {
     setTileSet(shuffleArray(tileSet));
   };
@@ -96,7 +95,9 @@ function App() {
     <>
       {lives == 0 ? <div> Game Over </div> :
         solved === numAnswers ? <div>You Win</div> :
-          <div id="game">
+        //todo -- add a summary of guesses here
+        //todo -- improve game over / win screen
+          <div id="play-area">
             <div id="board">
               {solvedTiles.map((tiles, index) => (
                 <Row
