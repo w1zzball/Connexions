@@ -25,24 +25,6 @@ const initColors = [
   { tricky: "#BA81C5" },
 ]
 
-// const initTileSet: Tile[] = [
-//   { question: "FRUIT", text: "Apple" },
-//   { question: "FRUIT", text: "Banana" },
-//   { question: "FRUIT", text: "Orange" },
-//   { question: "FRUIT", text: "Grape" },
-//   { question: "COLOR", text: "Red" },
-//   { question: "COLOR", text: "Blue" },
-//   { question: "COLOR", text: "Green" },
-//   { question: "COLOR", text: "Yellow" },
-//   { question: "ANIMAL", text: "Dog" },
-//   { question: "ANIMAL", text: "Cat" },
-//   { question: "ANIMAL", text: "Horse" },
-//   { question: "ANIMAL", text: "Cow" },
-//   { question: "COUNTRY", text: "France" },
-//   { question: "COUNTRY", text: "Japan" },
-//   { question: "COUNTRY", text: "Brazil" },
-//   { question: "COUNTRY", text: "Canada" },
-// ]
 
 let initQuestionSets: QuestionSet[] = [
   {
@@ -64,7 +46,17 @@ let initQuestionSets: QuestionSet[] = [
     question: "COUNTRies",
     answers: ["France", "Japan", "Brazil", "Canada"],
     color: '#BA81C5'
-  }
+  },
+  // {
+  //   question: "Programming Languages",
+  //   answers: ["JavaScript", "Python", "TypeScript", "Go"],
+  //   color: '#ff00d4ff'
+  // },
+  // {
+  //   question: "Planets in the Solar System",
+  //   answers: ["Mercury", "Venus", "Earth", "Mars"],
+  //   color: '#00bfff'
+  // }
 ]
 
 function questionSetsToTile(qSets: QuestionSet[]): Tile[] {
@@ -90,9 +82,7 @@ function App() {
   const [shakingTiles, setShakingTiles] = useState<Set<string>>(new Set());
   const [incorrectGuesses, setIncorrectGuesses] = useState<Tile[][]>([]);
   const [isPlaying, setIsPlaying] = useState(true);
-  //
-  const [questionSets, setQuestionSets] = useState();
-  //
+  const [questionSets, setQuestionSets] = useState(initQuestionSets);
   const shuffleTiles = () => {
     setTileSet(shuffleArray(tileSet));
   }
@@ -142,6 +132,7 @@ function App() {
   return (
     <GameConfigContext.Provider value={{ numQuestions, setNumQuestions, numAnswers, setNumAnswers }}>
       <>
+        <button onClick={() => setIsPlaying(old => !old)}>toggle setup</button>
         {isPlaying ?
           <div id="game">
             {lives == 0 ? <div> Game Over </div> :
@@ -196,7 +187,11 @@ function App() {
             }
           </div>
           :
-          <Setup />
+          <Setup
+            questionSets={questionSets}
+            setQuestionSets={setQuestionSets}
+
+          />
         }
 
       </>
