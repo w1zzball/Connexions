@@ -1,30 +1,38 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import Tile from './components/Tile.tsx'
+import Row from './components/Row.tsx'
 
 interface Tile {
-  answer: string;
+  question: string;
   text: string;
 }
 
+const initColors = [
+  { straightforward: "#F9DF6D" },
+  { moderate: "#A0C35A" },
+  { challenging: "#B0C4EF" },
+  { tricky: "#BA81C5" },
+]
+
 const initTileSet: Tile[] = [
 
-  { answer: "FRUIT", text: "Apple" },
-  { answer: "FRUIT", text: "Banana" },
-  { answer: "FRUIT", text: "Orange" },
-  { answer: "FRUIT", text: "Grape" },
-  { answer: "COLOR", text: "Red" },
-  { answer: "COLOR", text: "Blue" },
-  { answer: "COLOR", text: "Green" },
-  { answer: "COLOR", text: "Yellow" },
-  { answer: "ANIMAL", text: "Dog" },
-  { answer: "ANIMAL", text: "Cat" },
-  { answer: "ANIMAL", text: "Horse" },
-  { answer: "ANIMAL", text: "Cow" },
-  { answer: "COUNTRY", text: "France" },
-  { answer: "COUNTRY", text: "Japan" },
-  { answer: "COUNTRY", text: "Brazil" },
-  { answer: "COUNTRY", text: "Canada" },
+  { question: "FRUIT", text: "Apple" },
+  { question: "FRUIT", text: "Banana" },
+  { question: "FRUIT", text: "Orange" },
+  { question: "FRUIT", text: "Grape" },
+  { question: "COLOR", text: "Red" },
+  { question: "COLOR", text: "Blue" },
+  { question: "COLOR", text: "Green" },
+  { question: "COLOR", text: "Yellow" },
+  { question: "ANIMAL", text: "Dog" },
+  { question: "ANIMAL", text: "Cat" },
+  { question: "ANIMAL", text: "Horse" },
+  { question: "ANIMAL", text: "Cow" },
+  { question: "COUNTRY", text: "France" },
+  { question: "COUNTRY", text: "Japan" },
+  { question: "COUNTRY", text: "Brazil" },
+  { question: "COUNTRY", text: "Canada" },
 ];
 
 function App() {
@@ -34,6 +42,7 @@ function App() {
   const [selected, setSelected] = useState<Tile[]>([]);
   const [solved, setSolved] = useState(0);
   const [solvedTiles, setSolvedTiles] = useState<Tile[][]>([]);
+  const [shakingTiles, setShakingTiles] = useState<Set<string>>(new Set());
 
   const shuffleTiles = () => {
     const ShuffledTiles = [...tileSet].sort(() => Math.random() - 0.5);
@@ -48,9 +57,9 @@ function App() {
   };
 
   const submit = () => {
-    let answer = selected[0].answer;
+    let question = selected[0]?.question;
     let isCorrect: boolean = selected.reduce((acc, tile) =>
-      acc && tile.answer === answer
+      acc && tile.question === question
       , true)
     if (isCorrect) {
       setSolvedTiles(old => (
@@ -59,10 +68,11 @@ function App() {
       setTileSet(tileSet.filter(tile => !selected.includes(tile)));
       setSolved(solved + 1);
       deselectAll();
+    } else {
+      const shakeSet = new Set(selected.map(tile => tile.text));
+      setShakingTiles(shakeSet);
+      setTimeout(() => setShakingTiles(new Set()), 400);
     }
-    else {
-    }
-
   }
 
   const handleSelect = (tile: Tile) => {
@@ -80,13 +90,19 @@ function App() {
 
       </div>
       <div id="board">
+        <Row></Row>
         {tileSet.map(tile => (
-          <Tile key={tile.text}
+          <Tile
+            key={tile.text}
             text={tile.text}
             selected={selected.includes(tile)}
+            shake={shakingTiles.has(tile.text)}
             handleSelect={() => handleSelect(tile)}
           />
         ))}
+      </div>
+      <div id="mistakes-counter">
+        <p>Mistakes Remaining</p>
       </div>
       <div id="button-container">
         <button onClick={shuffleTiles}>Shuffle</button>
