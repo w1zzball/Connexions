@@ -74,6 +74,10 @@ function App() {
       setTimeout(() => setShakingTiles(new Set()), 400);
     }
   }
+  // log the solvedTiles whenever it changes
+  useEffect(() => {
+    console.log(solvedTiles);
+  }, [solvedTiles]);
 
   const handleSelect = (tile: Tile) => {
     if (selected.includes(tile)) {
@@ -90,7 +94,13 @@ function App() {
 
       </div>
       <div id="board">
-        <Row></Row>
+        {solvedTiles.map((tiles, index) => (
+          <Row
+            key={index}
+            question={tiles[0].question}
+            tileString={tiles.map(tile => tile.text).join(', ')}
+          />
+        ))}
         {tileSet.map(tile => (
           <Tile
             key={tile.text}
