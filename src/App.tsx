@@ -12,7 +12,7 @@ interface Tile {
   color: string;
 }
 
-interface QuestionSet {
+export interface QuestionSet {
   question: string;
   answers: string[];
   color: string;
@@ -130,7 +130,8 @@ function App() {
     }
   };
   return (
-    <GameConfigContext.Provider value={{ numQuestions, setNumQuestions, numAnswers, setNumAnswers }}>
+    <GameConfigContext.Provider
+      value={{ numQuestions, setNumQuestions, numAnswers, setNumAnswers, questionSets, setQuestionSets }}>
       <>
         <button onClick={() => setIsPlaying(old => !old)}>toggle setup</button>
         {isPlaying ?
@@ -187,11 +188,7 @@ function App() {
             }
           </div>
           :
-          <Setup
-            questionSets={questionSets}
-            setQuestionSets={setQuestionSets}
-
-          />
+          <Setup />
         }
 
       </>
