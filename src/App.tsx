@@ -129,6 +129,18 @@ function App() {
       }
     }
   };
+  // Reset game state when the number of questions changes or when the game is toggled
+  useEffect(() => {
+    if (isPlaying) {
+      setTileSet(shuffleArray(questionSetsToTile(questionSets)));
+      setSolvedTiles([]);
+      setSolved(0);
+      setSelected([]);
+      setLives(3);
+      setIncorrectGuesses([]);
+    }
+  }, [questionSets, isPlaying]);
+
   return (
     <GameConfigContext.Provider
       value={{ numQuestions, setNumQuestions, numAnswers, setNumAnswers, questionSets, setQuestionSets }}>

@@ -7,7 +7,12 @@ export default function QuestionArea({ questionIndex }: { questionIndex: number 
     return (
         <div className="question-area">
             <p>Question:</p>
-            <input className='color-picker' type="color"></input>
+            <input className='color-picker' type="color" value={questionSets[questionIndex]?.color}
+                onChange={(e) => {
+                    const newSets = [...questionSets];
+                    newSets[questionIndex].color = e.target.value;
+                    setQuestionSets(newSets);
+                }} />
             <input className='question-input' type="text" placeholder="Question"
                 maxLength={50} autoComplete="off"
                 value={questionSets[questionIndex]?.question}
