@@ -88,38 +88,44 @@ function App() {
   };
   return (
     <>
-      <div id="board">
-        {solvedTiles.map((tiles, index) => (
-          <Row
-            key={index}
-            question={tiles[0].question}
-            tileString={tiles.map(tile => tile.text).join(', ')}
-          />
-        ))}
-        {tileSet.map(tile => (
-          <Tile
-            key={tile.text}
-            text={tile.text}
-            selected={selected.includes(tile)}
-            shake={shakingTiles.has(tile.text)}
-            handleSelect={() => handleSelect(tile)}
-          />
-        ))}
+    {lives == 0 ? <div> Game Over </div> :
+        solved === numAnswers ? <div>You Win</div> :
+      <div id="game">
+        <div id="board">
+          {solvedTiles.map((tiles, index) => (
+            <Row
+              key={index}
+              question={tiles[0].question}
+              tileString={tiles.map(tile => tile.text).join(', ')}
+            />
+          ))}
+          {tileSet.map(tile => (
+            <Tile
+              key={tile.text}
+              text={tile.text}
+              selected={selected.includes(tile)}
+              shake={shakingTiles.has(tile.text)}
+              handleSelect={() => handleSelect(tile)}
+            />
+          ))}
+        </div>
+        <div id="mistakes-counter">
+          <p>Mistakes Remaining:  {"● ".repeat(lives)}</p>
+        </div>
+        <div id="button-container">
+          <button onClick={shuffleTiles}>Shuffle</button>
+          <button
+            className={selected.length < 1 ? 'disabled' : undefined}
+            onClick={selected.length < 1 ?  undefined : deselectAll}
+          >Deselect All</button>
+          <button
+            className={selected.length != 4 ? 'disabled' : undefined}
+            onClick={selected.length != 4 ? undefined : submit}
+          >submit</button>
+        </div>
       </div>
-      <div id="mistakes-counter">
-        <p>Mistakes Remaining:  {"● ".repeat(lives)}</p>
-      </div>
-      <div id="button-container">
-        <button onClick={shuffleTiles}>Shuffle</button>
-        <button
-          className={selected.length < 1 ? 'disabled' : undefined}
-          onClick={selected.length < 1 ?  undefined : deselectAll}
-        >Deselect All</button>
-        <button
-          className={selected.length != 4 ? 'disabled' : undefined}
-          onClick={selected.length != 4 ? undefined : submit}
-        >submit</button>
-      </div>
+    }
+
     </>
   )
 }
