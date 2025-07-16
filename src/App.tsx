@@ -9,6 +9,13 @@ import { GameConfigContext } from './context/GameConfigContext.tsx';
 interface Tile {
   question: string;
   text: string;
+  color: string;
+}
+
+interface QuestionSet {
+  question: string;
+  answers: string[];
+  color: string;
 }
 
 const initColors = [
@@ -18,25 +25,59 @@ const initColors = [
   { tricky: "#BA81C5" },
 ]
 
-const initTileSet: Tile[] = [
+// const initTileSet: Tile[] = [
+//   { question: "FRUIT", text: "Apple" },
+//   { question: "FRUIT", text: "Banana" },
+//   { question: "FRUIT", text: "Orange" },
+//   { question: "FRUIT", text: "Grape" },
+//   { question: "COLOR", text: "Red" },
+//   { question: "COLOR", text: "Blue" },
+//   { question: "COLOR", text: "Green" },
+//   { question: "COLOR", text: "Yellow" },
+//   { question: "ANIMAL", text: "Dog" },
+//   { question: "ANIMAL", text: "Cat" },
+//   { question: "ANIMAL", text: "Horse" },
+//   { question: "ANIMAL", text: "Cow" },
+//   { question: "COUNTRY", text: "France" },
+//   { question: "COUNTRY", text: "Japan" },
+//   { question: "COUNTRY", text: "Brazil" },
+//   { question: "COUNTRY", text: "Canada" },
+// ]
 
-  { question: "FRUIT", text: "Apple" },
-  { question: "FRUIT", text: "Banana" },
-  { question: "FRUIT", text: "Orange" },
-  { question: "FRUIT", text: "Grape" },
-  { question: "COLOR", text: "Red" },
-  { question: "COLOR", text: "Blue" },
-  { question: "COLOR", text: "Green" },
-  { question: "COLOR", text: "Yellow" },
-  { question: "ANIMAL", text: "Dog" },
-  { question: "ANIMAL", text: "Cat" },
-  { question: "ANIMAL", text: "Horse" },
-  { question: "ANIMAL", text: "Cow" },
-  { question: "COUNTRY", text: "France" },
-  { question: "COUNTRY", text: "Japan" },
-  { question: "COUNTRY", text: "Brazil" },
-  { question: "COUNTRY", text: "Canada" },
+let initQuestionSets: QuestionSet[] = [
+  {
+    question: "types of fruit",
+    answers: ["Apple", "Banana", "Orange", "Grape"],
+    color: '#F9DF6D'
+  },
+  {
+    question: "COLORs",
+    answers: ["Red", "Blue", "Green", "Yellow"],
+    color: '#A0C35A'
+  },
+  {
+    question: "ANIMALs",
+    answers: ["Dog", "Cat", "Horse", "Cow"],
+    color: '#B0C4EF'
+  },
+  {
+    question: "COUNTRies",
+    answers: ["France", "Japan", "Brazil", "Canada"],
+    color: '#BA81C5'
+  }
 ]
+
+function questionSetsToTile(qSets: QuestionSet[]): Tile[] {
+  let tileSet: Tile[] = []
+  qSets.forEach(qSet => {
+    qSet.answers.forEach(ans => {
+      tileSet.push({ question: qSet.question, text: ans, color: qSet.color })
+    })
+  })
+  return tileSet;
+}
+
+const initTileSet = questionSetsToTile(initQuestionSets);
 
 function App() {
   const [lives, setLives] = useState(3);
@@ -48,10 +89,14 @@ function App() {
   const [solvedTiles, setSolvedTiles] = useState<Tile[][]>([]);
   const [shakingTiles, setShakingTiles] = useState<Set<string>>(new Set());
   const [incorrectGuesses, setIncorrectGuesses] = useState<Tile[][]>([]);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+  //
+  const [questionSets, setQuestionSets] = useState();
+  //
   const shuffleTiles = () => {
     setTileSet(shuffleArray(tileSet));
   }
+
 
   function shuffleArray<T>(array: T[]): T[] {
     return [...array].sort(() => Math.random() - 0.5);
@@ -108,6 +153,7 @@ function App() {
                     {solvedTiles.map((tiles, index) => (
                       <Row
                         key={index}
+                        color={tiles[0].color}
                         question={tiles[0].question}
                         tileString={tiles.map(tile => tile.text).join(', ')}
                       />
