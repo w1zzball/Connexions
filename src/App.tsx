@@ -36,6 +36,7 @@ const initTileSet: Tile[] = [
 ];
 
 function App() {
+  const [lives, setLives] = useState(3);
   const [numQuestions, setNumQuestions] = useState(4);
   const [numAnswers, setNumAnswers] = useState(4);
   const [tileSet, setTileSet] = useState<Tile[]>(initTileSet);
@@ -112,7 +113,7 @@ function App() {
         ))}
       </div>
       <div id="mistakes-counter">
-        <p>Mistakes Remaining</p>
+        <p>Mistakes Remaining:  {"● ".repeat(lives)}</p>
       </div>
       <div id="button-container">
         <button onClick={shuffleTiles}>Shuffle</button>
