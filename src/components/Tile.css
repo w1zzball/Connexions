@@ -19,6 +19,8 @@
   white-space: normal;
   word-break: break-word;
   text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 .selected{
   background-color: #5A594E;

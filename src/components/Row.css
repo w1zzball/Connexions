@@ -19,4 +19,9 @@
     display: block;
     margin: 1px;
     padding: 1px;
+    text-transform: uppercase;
+}
+
+.answer {
+    font-weight: bold;
 }
