@@ -70,15 +70,12 @@ function App() {
       setSolved(solved + 1);
       deselectAll();
     } else {
+      setLives(lives - 1);
       const shakeSet = new Set(selected.map(tile => tile.text));
       setShakingTiles(shakeSet);
       setTimeout(() => setShakingTiles(new Set()), 400);
     }
   }
-  // log the solvedTiles whenever it changes
-  useEffect(() => {
-    console.log(solvedTiles);
-  }, [solvedTiles]);
 
   const handleSelect = (tile: Tile) => {
     if (selected.includes(tile)) {
@@ -91,9 +88,6 @@ function App() {
   };
   return (
     <>
-      <div id="solved-container">
-
-      </div>
       <div id="board">
         {solvedTiles.map((tiles, index) => (
           <Row
@@ -117,8 +111,14 @@ function App() {
       </div>
       <div id="button-container">
         <button onClick={shuffleTiles}>Shuffle</button>
-        <button className={selected.length < 1 ? 'disabled' : undefined} onClick={deselectAll}>Deselect All</button>
-        <button className={selected.length != 4 ? 'disabled' : undefined} onClick={submit}>submit</button>
+        <button
+          className={selected.length < 1 ? 'disabled' : undefined}
+          onClick={selected.length < 1 ?  undefined : deselectAll}
+        >Deselect All</button>
+        <button
+          className={selected.length != 4 ? 'disabled' : undefined}
+          onClick={selected.length != 4 ? undefined : submit}
+        >submit</button>
       </div>
     </>
   )
