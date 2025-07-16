@@ -39,7 +39,7 @@ function App() {
   const [lives, setLives] = useState(3);
   const [numQuestions, setNumQuestions] = useState(4);
   const [numAnswers, setNumAnswers] = useState(4);
-  const [tileSet, setTileSet] = useState<Tile[]>(initTileSet);
+  const [tileSet, setTileSet] = useState<Tile[]>(() => shuffleArray(initTileSet));
   const [selected, setSelected] = useState<Tile[]>([]);
   const [solved, setSolved] = useState(0);
   const [solvedTiles, setSolvedTiles] = useState<Tile[][]>([]);
@@ -47,19 +47,19 @@ function App() {
   const [incorrectGuesses, setIncorrectGuesses] = useState<Tile[][]>([]);
 
   const shuffleTiles = () => {
-    const ShuffledTiles = [...tileSet].sort(() => Math.random() - 0.5);
-    setTileSet(ShuffledTiles);
+    setTileSet(shuffleArray(tileSet));
   };
-  useEffect(() => {
-    shuffleTiles();
-  }, []);
+  
+  function shuffleArray<T>(array: T[]): T[] {
+    return [...array].sort(() => Math.random() - 0.5);
+  }
 
   const deselectAll = () => {
     setSelected([]);
   };
 
   const submit = () => {
-    if(incorrectGuesses.includes(selected)) {
+    if (incorrectGuesses.includes(selected)) {
       alert("You have already guessed this combination.");
       //TODO -- this should be a toast, not an alert, implement with timeout
       return;
@@ -93,43 +93,43 @@ function App() {
   };
   return (
     <>
-    {lives == 0 ? <div> Game Over </div> :
+      {lives == 0 ? <div> Game Over </div> :
         solved === numAnswers ? <div>You Win</div> :
-      <div id="game">
-        <div id="board">
-          {solvedTiles.map((tiles, index) => (
-            <Row
-              key={index}
-              question={tiles[0].question}
-              tileString={tiles.map(tile => tile.text).join(', ')}
-            />
-          ))}
-          {tileSet.map(tile => (
-            <Tile
-              key={tile.text}
-              text={tile.text}
-              selected={selected.includes(tile)}
-              shake={shakingTiles.has(tile.text)}
-              handleSelect={() => handleSelect(tile)}
-            />
-          ))}
-        </div>
-        <div id="mistakes-counter">
-          <p>Mistakes Remaining:  {"● ".repeat(lives)}</p>
-        </div>
-        <div id="button-container">
-          <button onClick={shuffleTiles}>Shuffle</button>
-          <button
-            className={selected.length < 1 ? 'disabled' : undefined}
-            onClick={selected.length < 1 ?  undefined : deselectAll}
-          >Deselect All</button>
-          <button
-            className={selected.length != 4 ? 'disabled' : undefined}
-            onClick={selected.length != 4 ? undefined : submit}
-          >submit</button>
-        </div>
-      </div>
-    }
+          <div id="game">
+            <div id="board">
+              {solvedTiles.map((tiles, index) => (
+                <Row
+                  key={index}
+                  question={tiles[0].question}
+                  tileString={tiles.map(tile => tile.text).join(', ')}
+                />
+              ))}
+              {tileSet.map(tile => (
+                <Tile
+                  key={tile.text}
+                  text={tile.text}
+                  selected={selected.includes(tile)}
+                  shake={shakingTiles.has(tile.text)}
+                  handleSelect={() => handleSelect(tile)}
+                />
+              ))}
+            </div>
+            <div id="mistakes-counter">
+              <p>Mistakes Remaining:  {"● ".repeat(lives)}</p>
+            </div>
+            <div id="button-container">
+              <button onClick={shuffleTiles}>Shuffle</button>
+              <button
+                className={selected.length < 1 ? 'disabled' : undefined}
+                onClick={selected.length < 1 ? undefined : deselectAll}
+              >Deselect All</button>
+              <button
+                className={selected.length != 4 ? 'disabled' : undefined}
+                onClick={selected.length != 4 ? undefined : submit}
+              >submit</button>
+            </div>
+          </div>
+      }
 
     </>
   )
