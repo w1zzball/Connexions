@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import './App.css'
 import Tile from './components/Tile.tsx'
 import Row from './components/Row.tsx'
+import Setup from './components/Setup.tsx'
 
 interface Tile {
   question: string;
@@ -34,7 +35,7 @@ const initTileSet: Tile[] = [
   { question: "COUNTRY", text: "Japan" },
   { question: "COUNTRY", text: "Brazil" },
   { question: "COUNTRY", text: "Canada" },
-];
+]
 
 function App() {
   const [lives, setLives] = useState(3);
@@ -46,9 +47,10 @@ function App() {
   const [solvedTiles, setSolvedTiles] = useState<Tile[][]>([]);
   const [shakingTiles, setShakingTiles] = useState<Set<string>>(new Set());
   const [incorrectGuesses, setIncorrectGuesses] = useState<Tile[][]>([]);
+  const [isPlaying, setIsPlaying] = useState(false);
   const shuffleTiles = () => {
     setTileSet(shuffleArray(tileSet));
-  };
+  }
 
   function shuffleArray<T>(array: T[]): T[] {
     return [...array].sort(() => Math.random() - 0.5);
@@ -56,7 +58,7 @@ function App() {
 
   const deselectAll = () => {
     setSelected([]);
-  };
+  }
 
   const submit = () => {
     if (incorrectGuesses.includes(selected)) {
@@ -93,55 +95,61 @@ function App() {
   };
   return (
     <>
-      {lives == 0 ? <div> Game Over </div> :
-        solved === numAnswers ? <div>You Win</div> :
-        //todo -- add a summary of guesses here
-        //todo -- improve game over / win screen
-          <div id="play-area">
-            <div id="board">
-              {solvedTiles.map((tiles, index) => (
-                <Row
-                  key={index}
-                  question={tiles[0].question}
-                  tileString={tiles.map(tile => tile.text).join(', ')}
-                />
-              ))}
-              <AnimatePresence>
-                {tileSet.map(tile => (
-                  <motion.div
-                    key={tile.text}
-                    layout
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0.8, opacity: 0 }}
-                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                  >
-                    <Tile
-                      text={tile.text}
-                      selected={selected.includes(tile)}
-                      shake={shakingTiles.has(tile.text)}
-                      handleSelect={() => handleSelect(tile)}
+      {isPlaying ?
+        <div id="game">
+          {lives == 0 ? <div> Game Over </div> :
+            solved === numAnswers ? <div>You Win</div> :
+              //todo -- add a summary of guesses here
+              //todo -- improve game over / win screen
+              <div id="play-area">
+                <div id="board">
+                  {solvedTiles.map((tiles, index) => (
+                    <Row
+                      key={index}
+                      question={tiles[0].question}
+                      tileString={tiles.map(tile => tile.text).join(', ')}
                     />
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </div>
-            <div id="mistakes-counter">
-              <p>Mistakes Remaining:  {"● ".repeat(lives)}</p>
-            </div>
-            <div id="button-container">
-              <button onClick={shuffleTiles}>Shuffle</button>
-              <button
-                className={selected.length < 1 ? 'disabled' : undefined}
-                onClick={selected.length < 1 ? undefined : deselectAll}
-              >Deselect All</button>
-              <button
-                className={selected.length != 4 ? 'disabled' : undefined}
-                onClick={selected.length != 4 ? undefined : submit}
-              >submit</button>
-            </div>
-          </div>
-      }
+                  ))}
+                  <AnimatePresence>
+                    {tileSet.map(tile => (
+                      <motion.div
+                        key={tile.text}
+                        layout
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.8, opacity: 0 }}
+                        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                      >
+                        <Tile
+                          text={tile.text}
+                          selected={selected.includes(tile)}
+                          shake={shakingTiles.has(tile.text)}
+                          handleSelect={() => handleSelect(tile)}
+                        />
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </div>
+                <div id="mistakes-counter">
+                  <p>Mistakes Remaining:  {"● ".repeat(lives)}</p>
+                </div>
+                <div id="button-container">
+                  <button onClick={shuffleTiles}>Shuffle</button>
+                  <button
+                    className={selected.length < 1 ? 'disabled' : undefined}
+                    onClick={selected.length < 1 ? undefined : deselectAll}
+                  >Deselect All</button>
+                  <button
+                    className={selected.length != 4 ? 'disabled' : undefined}
+                    onClick={selected.length != 4 ? undefined : submit}
+                  >submit</button>
+                </div>
+              </div>
+          }
+        </div>
+        :
+        <Setup/>
+        }
 
     </>
   )
