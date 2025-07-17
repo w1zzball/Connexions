@@ -5,26 +5,7 @@ import Tile from './components/Tile.tsx'
 import Row from './components/Row.tsx'
 import Setup from './components/Setup.tsx'
 import { GameConfigContext } from './context/GameConfigContext.tsx';
-
-interface Tile {
-  question: string;
-  text: string;
-  color: string;
-}
-
-export interface QuestionSet {
-  question: string;
-  answers: string[];
-  color: string;
-}
-
-const initColors = [
-  { straightforward: "#F9DF6D" },
-  { moderate: "#A0C35A" },
-  { challenging: "#B0C4EF" },
-  { tricky: "#BA81C5" },
-]
-
+import type { Tile as TileType, QuestionSet } from './types/types.tsx';
 
 let initQuestionSets: QuestionSet[] = [
   {
@@ -47,20 +28,10 @@ let initQuestionSets: QuestionSet[] = [
     answers: ["France", "Japan", "Brazil", "Canada"],
     color: '#BA81C5'
   },
-  // {
-  //   question: "Programming Languages",
-  //   answers: ["JavaScript", "Python", "TypeScript", "Go"],
-  //   color: '#ff00d4ff'
-  // },
-  // {
-  //   question: "Planets in the Solar System",
-  //   answers: ["Mercury", "Venus", "Earth", "Mars"],
-  //   color: '#00bfff'
-  // }
 ]
 
-function questionSetsToTile(qSets: QuestionSet[]): Tile[] {
-  let tileSet: Tile[] = []
+function questionSetsToTile(qSets: QuestionSet[]): TileType[] {
+  let tileSet: TileType[] = []
   qSets.forEach(qSet => {
     qSet.answers.forEach(ans => {
       tileSet.push({ question: qSet.question, text: ans, color: qSet.color })
@@ -75,12 +46,15 @@ function App() {
   const [lives, setLives] = useState(3);
   const [numQuestions, setNumQuestions] = useState(4);
   const [numAnswers, setNumAnswers] = useState(4);
-  const [tileSet, setTileSet] = useState<Tile[]>(() => shuffleArray(initTileSet));
-  const [selected, setSelected] = useState<Tile[]>([]);
+  const [tileSet, setTileSet] = useState<TileType[]>(() => shuffleArray(initTileSet));
+  const [selected, setSelected] = useState<TileType[]>([]);
+  //TODO get rid of solved, derive it from solvedTiles.length
+  //TODO get rid of solvedTiles, derive it from tileSet
+  //TODO get rid of shakingTiles, derive it from selected
   const [solved, setSolved] = useState(0);
-  const [solvedTiles, setSolvedTiles] = useState<Tile[][]>([]);
+  const [solvedTiles, setSolvedTiles] = useState<TileType[][]>([]);
   const [shakingTiles, setShakingTiles] = useState<Set<string>>(new Set());
-  const [incorrectGuesses, setIncorrectGuesses] = useState<Tile[][]>([]);
+  const [incorrectGuesses, setIncorrectGuesses] = useState<TileType[][]>([]);
   const [isPlaying, setIsPlaying] = useState(true);
   const [questionSets, setQuestionSets] = useState(initQuestionSets);
   const shuffleTiles = () => {
@@ -120,7 +94,7 @@ function App() {
     }
   }
 
-  const handleSelect = (tile: Tile) => {
+  const handleSelect = (tile: TileType) => {
     if (selected.includes(tile)) {
       setSelected(selected.filter(t => t !== tile));
     } else {

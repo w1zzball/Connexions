@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import type { QuestionSet } from "../App.tsx";
+import type { QuestionSet } from "../types/types.tsx";
 export const GameConfigContext = createContext<{
     numQuestions: number;
     setNumQuestions: (n: number) => void;
