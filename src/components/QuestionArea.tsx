@@ -5,7 +5,7 @@ import { useState } from 'react'
 export default function QuestionArea({ questionIndex }: { questionIndex: number }) {
     const { numQuestions, questionSets, setQuestionSets } = useGameConfig();
     return (
-        <div className="question-area">
+        <div className="question-area" style={{ backgroundColor: questionSets[questionIndex]?.color }}>
             <p>Question:</p>
             <input className='color-picker' type="color" value={questionSets[questionIndex]?.color}
                 onChange={(e) => {

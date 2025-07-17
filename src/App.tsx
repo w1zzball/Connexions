@@ -14,7 +14,7 @@ let initQuestionSets: QuestionSet[] = [
     color: '#F9DF6D'
   },
   {
-    question: "COLORs",
+    question: "COLOuRs",
     answers: ["Red", "Blue", "Green", "Yellow"],
     color: '#A0C35A'
   },
