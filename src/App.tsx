@@ -51,7 +51,7 @@ function App() {
   //TODO get rid of shakingTiles, derive it from selected
   const [solvedTiles, setSolvedTiles] = useState<TileType[][]>([]);
   const [shakingTiles, setShakingTiles] = useState<Set<string>>(new Set());
-  const [incorrectGuesses, setIncorrectGuesses] = useState<TileType[][]>([]);
+  const [guessHistory, setGuessHistory] = useState<TileType[][]>([]);
   const [isPlaying, setIsPlaying] = useState(true);
   const [questionSets, setQuestionSets] = useState(initQuestionSets);
   const shuffleTiles = () => {
@@ -68,7 +68,7 @@ function App() {
   }
 
   const submit = () => {
-    if (incorrectGuesses.includes(selected)) {
+    if (guessHistory.includes(selected)) {
       alert("You have already guessed this combination.");
       //TODO -- this should be a toast, not an alert, implement with timeout
       return;
@@ -80,9 +80,10 @@ function App() {
     if (isCorrect) {
       setSolvedTiles(old => [...old, selected])
       setTileSet(tileSet.filter(tile => !selected.includes(tile)));
+      setGuessHistory(old => [...old, selected]);
       deselectAll();
     } else {
-      setIncorrectGuesses(old => [...old, selected]);
+      setGuessHistory(old => [...old, selected]);
       setLives(lives - 1);
       //
 
@@ -108,7 +109,6 @@ function App() {
       setSolvedTiles([]);
       setSelected([]);
       setLives(3);
-      setIncorrectGuesses([]);
     }
   }, [questionSets, isPlaying]);
 
