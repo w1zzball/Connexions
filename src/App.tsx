@@ -48,10 +48,7 @@ function App() {
   const [numAnswers, setNumAnswers] = useState(4);
   const [tileSet, setTileSet] = useState<TileType[]>(() => shuffleArray(initTileSet));
   const [selected, setSelected] = useState<TileType[]>([]);
-  //TODO get rid of solved, derive it from solvedTiles.length
-  //TODO get rid of solvedTiles, derive it from tileSet
   //TODO get rid of shakingTiles, derive it from selected
-  const [solved, setSolved] = useState(0);
   const [solvedTiles, setSolvedTiles] = useState<TileType[][]>([]);
   const [shakingTiles, setShakingTiles] = useState<Set<string>>(new Set());
   const [incorrectGuesses, setIncorrectGuesses] = useState<TileType[][]>([]);
@@ -83,11 +80,12 @@ function App() {
     if (isCorrect) {
       setSolvedTiles(old => [...old, selected])
       setTileSet(tileSet.filter(tile => !selected.includes(tile)));
-      setSolved(solved + 1);
       deselectAll();
     } else {
       setIncorrectGuesses(old => [...old, selected]);
       setLives(lives - 1);
+      //
+
       const shakeSet = new Set(selected.map(tile => tile.text));
       setShakingTiles(shakeSet);
       setTimeout(() => setShakingTiles(new Set()), 400);
@@ -108,7 +106,6 @@ function App() {
     if (isPlaying) {
       setTileSet(shuffleArray(questionSetsToTile(questionSets)));
       setSolvedTiles([]);
-      setSolved(0);
       setSelected([]);
       setLives(3);
       setIncorrectGuesses([]);
@@ -123,7 +120,7 @@ function App() {
         {isPlaying ?
           <div id="game">
             {lives == 0 ? <div> Game Over </div> :
-              solved === numAnswers ? <div>You Win</div> :
+              tileSet.length === 0 ? <div>You Win</div> :
                 //todo -- add a summary of guesses here
                 //todo -- improve game over / win screen
                 <div id="play-area">
