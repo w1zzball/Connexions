@@ -43,17 +43,18 @@ function questionSetsToTile(qSets: QuestionSet[]): TileType[] {
 const initTileSet = questionSetsToTile(initQuestionSets);
 
 function App() {
-  const [lives, setLives] = useState(3);
   const [numQuestions, setNumQuestions] = useState(4);
   const [numAnswers, setNumAnswers] = useState(4);
+
+  const [lives, setLives] = useState(3);
   const [tileSet, setTileSet] = useState<TileType[]>(() => shuffleArray(initTileSet));
   const [selected, setSelected] = useState<TileType[]>([]);
   //TODO get rid of shakingTiles, derive it from selected
   const [solvedTiles, setSolvedTiles] = useState<TileType[][]>([]);
-  const [shakingTiles, setShakingTiles] = useState<Set<string>>(new Set());
   const [guessHistory, setGuessHistory] = useState<TileType[][]>([]);
   const [isPlaying, setIsPlaying] = useState(true);
   const [questionSets, setQuestionSets] = useState(initQuestionSets);
+  const [isShaking, setIsShaking] = useState(false);
   const shuffleTiles = () => {
     setTileSet(shuffleArray(tileSet));
   }
@@ -85,11 +86,8 @@ function App() {
     } else {
       setGuessHistory(old => [...old, selected]);
       setLives(lives - 1);
-      //
-
-      const shakeSet = new Set(selected.map(tile => tile.text));
-      setShakingTiles(shakeSet);
-      setTimeout(() => setShakingTiles(new Set()), 400);
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 400);
     }
   }
 
@@ -146,7 +144,7 @@ function App() {
                           <Tile
                             text={tile.text}
                             selected={selected.includes(tile)}
-                            shake={shakingTiles.has(tile.text)}
+                            shake={isShaking && selected.includes(tile)}
                             handleSelect={() => handleSelect(tile)}
                           />
                         </motion.div>
