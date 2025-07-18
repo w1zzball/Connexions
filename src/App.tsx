@@ -186,7 +186,7 @@ function App() {
                     <button
                       className={selected.length !== numAnswers ? 'disabled' : undefined}
                       onClick={selected.length !== numAnswers ? undefined : submit}
-                    >submit</button>
+                    >Submit</button>
                     <button className="settings-button " onClick={() => setIsPlaying(old => !old)}>
                       <i className="fa-solid fa-gear"></i>
                     </button>
