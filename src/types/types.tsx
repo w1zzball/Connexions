@@ -9,3 +9,7 @@ export interface QuestionSet {
     answers: string[];
     color: string;
 }
+
+export interface GuessSummaryProps {
+    guessHistory: Tile[][];
+}

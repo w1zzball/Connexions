@@ -6,6 +6,7 @@ import Row from './components/Row.tsx'
 import Setup from './components/Setup.tsx'
 import { GameConfigContext } from './context/GameConfigContext.tsx';
 import type { Tile as TileType, QuestionSet } from './types/types.tsx';
+import GuessSummary from './components/GuessSummary.tsx';
 
 let initQuestionSets: QuestionSet[] = [
   {
@@ -103,6 +104,7 @@ function App() {
   // Reset game state when the number of questions changes or when the game is toggled
   useEffect(() => {
     if (isPlaying) {
+      setGuessHistory([]);
       setTileSet(shuffleArray(questionSetsToTile(questionSets)));
       setSolvedTiles([]);
       setSelected([]);
@@ -114,10 +116,13 @@ function App() {
     <GameConfigContext.Provider
       value={{ numQuestions, setNumQuestions, numAnswers, setNumAnswers, questionSets, setQuestionSets }}>
       <>
-        <button onClick={() => setIsPlaying(old => !old)}>toggle setup</button>
+
         {isPlaying ?
           <div id="game">
-            {lives == 0 ? <div> Game Over </div> :
+            {lives == 0 ? <div>
+              Game Over
+              <GuessSummary guessHistory={guessHistory} />
+            </div> :
               tileSet.length === 0 ? <div>You Win</div> :
                 //todo -- add a summary of guesses here
                 //todo -- improve game over / win screen
@@ -164,12 +169,23 @@ function App() {
                       className={selected.length != 4 ? 'disabled' : undefined}
                       onClick={selected.length != 4 ? undefined : submit}
                     >submit</button>
+                    <button onClick={() => setIsPlaying(old => !old)}>
+                      <i className="fa-solid fa-gear"></i>
+
+                    </button>
                   </div>
                 </div>
             }
           </div>
           :
-          <Setup />
+          <div>
+            <button className="back-button" onClick={() => setIsPlaying(old => !old)}>
+              <i className="fa-solid fa-arrow-left"></i>
+            </button>
+            <Setup />
+
+          </div>
+
         }
 
       </>

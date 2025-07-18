@@ -7,19 +7,26 @@
   align-items: stretch;
   margin-bottom: 2rem;
 }
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
 }
+
 #button-container {
   display: flex;
   justify-content: center;
   gap: 1rem;
 }
+
 .disabled {
   background-color: #ccc;
   color: #666;
   cursor: not-allowed;
+}
+
+.back-button {
+  border: 2px solid #ccc;
 }
