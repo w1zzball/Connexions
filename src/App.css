@@ -46,4 +46,28 @@
     width: 100vw;
     box-sizing: border-box;
   }
+  #button-container {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: stretch;
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 0 8px;
+  }
+  #button-container > * {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    margin: 0;
+    max-width: 100%;
+  }
+  #button-container button,
+  #button-container .back-button {
+    font-size: 1.05em;
+    padding: 0.8em 0.5em;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
 }
