@@ -31,26 +31,26 @@ let initQuestionSets: QuestionSet[] = [
   },
 ]
 
+let tileIdCounter = 0;
 function questionSetsToTile(qSets: QuestionSet[]): TileType[] {
-  let tileSet: TileType[] = []
+  let tileSet: TileType[] = [];
   qSets.forEach(qSet => {
     qSet.answers.forEach(ans => {
-      tileSet.push({ question: qSet.question, text: ans, color: qSet.color })
-    })
-  })
+      tileSet.push({ question: qSet.question, text: ans, color: qSet.color, id: tileIdCounter++ });
+    });
+  });
   return tileSet;
 }
 
 const initTileSet = questionSetsToTile(initQuestionSets);
 
 function App() {
-  const [numQuestions, setNumQuestions] = useState(4);
-  const [numAnswers, setNumAnswers] = useState(4);
+  const [numQuestions, setNumQuestions] = useState(initQuestionSets.length);
+  const [numAnswers, setNumAnswers] = useState(initQuestionSets[0]?.answers.length || 4);
 
   const [lives, setLives] = useState(3);
   const [tileSet, setTileSet] = useState<TileType[]>(() => shuffleArray(initTileSet));
   const [selected, setSelected] = useState<TileType[]>([]);
-  //TODO get rid of shakingTiles, derive it from selected
   const [solvedTiles, setSolvedTiles] = useState<TileType[][]>([]);
   const [guessHistory, setGuessHistory] = useState<TileType[][]>([]);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -60,30 +60,26 @@ function App() {
     setTileSet(shuffleArray(tileSet));
   }
 
-
   function shuffleArray<T>(array: T[]): T[] {
     return [...array].sort(() => Math.random() - 0.5);
   }
 
-  const deselectAll = () => {
-    setSelected([]);
-  }
 
   const submit = () => {
-    if (guessHistory.includes(selected)) {
+    if (guessHistory.some(g => JSON.stringify(g.map(t => t.id)) === JSON.stringify(selected.map(t => t.id)))) {
       alert("You have already guessed this combination.");
-      //TODO -- this should be a toast, not an alert, implement with timeout
       return;
     }
+    if (selected.length !== numAnswers) return;
     let question = selected[0]?.question;
     let isCorrect: boolean = selected.reduce((acc, tile) =>
       acc && tile.question === question
       , true)
     if (isCorrect) {
-      setSolvedTiles(old => [...old, selected])
-      setTileSet(tileSet.filter(tile => !selected.includes(tile)));
+      setSolvedTiles(old => [...old, selected]);
+      setTileSet(prevTileSet => prevTileSet.filter(tile => !selected.some(sel => sel.id === tile.id)));
+      setSelected([]);
       setGuessHistory(old => [...old, selected]);
-      deselectAll();
     } else {
       setGuessHistory(old => [...old, selected]);
       setLives(lives - 1);
@@ -93,15 +89,15 @@ function App() {
   }
 
   const handleSelect = (tile: TileType) => {
-    if (selected.includes(tile)) {
-      setSelected(selected.filter(t => t !== tile));
+    if (selected.some(t => t.id === tile.id)) {
+      setSelected(selected.filter(t => t.id !== tile.id));
     } else {
       if (selected.length < numAnswers) {
         setSelected([...selected, tile]);
       }
     }
   };
-  // Reset game state when the number of questions changes or when the game is toggled
+  // reset game state when the number of questions changes or when the game is toggled
   useEffect(() => {
     if (isPlaying) {
       setGuessHistory([]);
@@ -131,34 +127,46 @@ function App() {
                 //todo -- add a summary of guesses here
                 //todo -- improve game over / win screen
                 <div id="play-area">
-                  <div id="board">
+                  {/* solved rows*/}
+                  <div style={{ marginBottom: '16px' }}>
                     {solvedTiles.map((tiles, index) => (
                       <Row
                         key={index}
-                        color={tiles[0].color}
-                        question={tiles[0].question}
+                        color={tiles[0]?.color}
+                        question={tiles[0]?.question}
                         tileString={tiles.map(tile => tile.text).join(', ')}
                       />
                     ))}
-                    <AnimatePresence>
-                      {tileSet.map(tile => (
-                        <motion.div
-                          key={tile.text}
-                          layout
-                          initial={{ scale: 0.8, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          exit={{ scale: 0.8, opacity: 0 }}
-                          transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                        >
-                          <Tile
-                            text={tile.text}
-                            selected={selected.includes(tile)}
-                            shake={isShaking && selected.includes(tile)}
-                            handleSelect={() => handleSelect(tile)}
-                          />
-                        </motion.div>
-                      ))}
-                    </AnimatePresence>
+                  </div>
+                  <div
+                    id="board"
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: `repeat(${numAnswers}, 1fr)`,
+                      gap: '12px',
+                      justifyItems: 'center',
+                      alignItems: 'center',
+                      width: '100%',
+                      margin: '0 auto',
+                    }}
+                  >
+                    {tileSet.map(tile => (
+                      <motion.div
+                        key={tile.id}
+                        layout
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.8, opacity: 0 }}
+                        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                      >
+                        <Tile
+                          text={tile.text}
+                          selected={selected.some(t => t.id === tile.id)}
+                          shake={isShaking && selected.some(t => t.id === tile.id)}
+                          handleSelect={() => handleSelect(tile)}
+                        />
+                      </motion.div>
+                    ))}
                   </div>
                   <div id="mistakes-counter">
                     <p>Mistakes Remaining:  {"● ".repeat(lives)}</p>
@@ -167,15 +175,14 @@ function App() {
                     <button onClick={shuffleTiles}>Shuffle</button>
                     <button
                       className={selected.length < 1 ? 'disabled' : undefined}
-                      onClick={selected.length < 1 ? undefined : deselectAll}
+                      onClick={selected.length < 1 ? undefined : () => setSelected([])}
                     >Deselect All</button>
                     <button
-                      className={selected.length != 4 ? 'disabled' : undefined}
-                      onClick={selected.length != 4 ? undefined : submit}
+                      className={selected.length !== numAnswers ? 'disabled' : undefined}
+                      onClick={selected.length !== numAnswers ? undefined : submit}
                     >submit</button>
                     <button className="settings-button " onClick={() => setIsPlaying(old => !old)}>
                       <i className="fa-solid fa-gear"></i>
-
                     </button>
                   </div>
                 </div>

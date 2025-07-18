@@ -3,11 +3,9 @@ import { useGameConfig } from '../context/GameConfigContext.tsx'
 import { useState } from 'react'
 
 export default function QuestionArea({ questionIndex }: { questionIndex: number }) {
-    const { numQuestions, questionSets, setQuestionSets } = useGameConfig();
+    const { numAnswers, questionSets, setQuestionSets } = useGameConfig();
     return (
         <div className="question-area" style={{ backgroundColor: questionSets[questionIndex]?.color }}>
-            {/* <p>Question:</p> */}
-
             <input className='question-input' type="text" placeholder="Question"
                 maxLength={50} autoComplete="off"
                 value={questionSets[questionIndex]?.question}
@@ -25,10 +23,8 @@ export default function QuestionArea({ questionIndex }: { questionIndex: number 
                         newSets[questionIndex].color = e.target.value;
                         setQuestionSets(newSets);
                     }} />
-
             </div>
-            {/* <p>Answer:</p> */}
-            {Array(numQuestions).fill(0).map((_, index) => (
+            {Array(numAnswers).fill(0).map((_, index) => (
                 <input key={index} className='answer-input' type="text" placeholder={`Answer ${index + 1}`}
                     value={questionSets[questionIndex]?.answers[index]}
                     onChange={(e) => {
@@ -39,6 +35,5 @@ export default function QuestionArea({ questionIndex }: { questionIndex: number 
                 />
             ))}
         </div>
-
     )
 }
