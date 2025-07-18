@@ -3,7 +3,7 @@ import { useGameConfig } from '../context/GameConfigContext.tsx'
 import './Setup.css'
 
 export default function Setup() {
-    const { numQuestions, setNumQuestions, numAnswers, setNumAnswers, questionSets, setQuestionSets } = useGameConfig();
+    const { numQuestions, setNumQuestions, numAnswers, setNumAnswers, numLives, setNumLives, questionSets, setQuestionSets } = useGameConfig();
 
     // Add a new question
     const addQuestion = () => {
@@ -56,6 +56,12 @@ export default function Setup() {
                     <button onClick={removeAnswer} disabled={numAnswers <= 1}>-</button>
                     <span style={{ margin: '0 8px' }}>{numAnswers}</span>
                     <button onClick={addAnswer}>+</button>
+                </div>
+                <div>
+                    <span style={{ fontWeight: 'bold' }}>Lives: </span>
+                    <button onClick={() => setNumLives(numLives > 1 ? numLives - 1 : 1)} disabled={numLives <= 1}>-</button>
+                    <span style={{ margin: '0 8px' }}>{numLives}</span>
+                    <button onClick={() => setNumLives(numLives + 1)}>+</button>
                 </div>
             </div>
             <div id="question-container">

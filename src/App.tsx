@@ -47,8 +47,8 @@ const initTileSet = questionSetsToTile(initQuestionSets);
 function App() {
   const [numQuestions, setNumQuestions] = useState(initQuestionSets.length);
   const [numAnswers, setNumAnswers] = useState(initQuestionSets[0]?.answers.length || 4);
-
-  const [lives, setLives] = useState(3);
+  const [numLives, setNumLives] = useState(4);
+  const [lives, setLives] = useState(4);
   const [tileSet, setTileSet] = useState<TileType[]>(() => shuffleArray(initTileSet));
   const [selected, setSelected] = useState<TileType[]>([]);
   const [solvedTiles, setSolvedTiles] = useState<TileType[][]>([]);
@@ -64,9 +64,15 @@ function App() {
     return [...array].sort(() => Math.random() - 0.5);
   }
 
-
   const submit = () => {
-    if (guessHistory.some(g => JSON.stringify(g.map(t => t.id)) === JSON.stringify(selected.map(t => t.id)))) {
+    // Helper to compare two arrays of tile ids regardless of order
+    const idsSorted = arr => arr.map(t => t.id).sort((a, b) => a - b);
+    const isSameSet = (a, b) => {
+      const aIds = idsSorted(a);
+      const bIds = idsSorted(b);
+      return aIds.length === bIds.length && aIds.every((id, i) => id === bIds[i]);
+    };
+    if (guessHistory.some(g => isSameSet(g, selected))) {
       alert("You have already guessed this combination.");
       return;
     }
@@ -104,13 +110,13 @@ function App() {
       setTileSet(shuffleArray(questionSetsToTile(questionSets)));
       setSolvedTiles([]);
       setSelected([]);
-      setLives(3);
+      setLives(numLives);
     }
-  }, [questionSets, isPlaying]);
+  }, [questionSets, isPlaying, numLives]);
 
   return (
     <GameConfigContext.Provider
-      value={{ numQuestions, setNumQuestions, numAnswers, setNumAnswers, questionSets, setQuestionSets }}>
+      value={{ numQuestions, setNumQuestions, numAnswers, setNumAnswers, numLives, setNumLives, questionSets, setQuestionSets }}>
       <>
 
         {isPlaying ?
