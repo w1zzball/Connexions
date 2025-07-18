@@ -31,8 +31,8 @@
   .row {
     min-width: 60px;
     min-height: 32px;
-    padding: 2px;
-    margin: 3px 0;
+    padding: 0; /* Remove padding to reduce gap */
+    margin: 1px 0; /* Reduce margin to minimize gap */
     font-size: 0.85em;
   }
   .row p {

@@ -150,7 +150,7 @@ function App() {
                       display: 'grid',
                       gridTemplateColumns: `repeat(${numAnswers}, 1fr)`,
                       gap: '12px',
-                      justifyItems: 'center',
+                      justifyItems: 'stretch',
                       alignItems: 'center',
                       width: '100%',
                       margin: '0 auto',

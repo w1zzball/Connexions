@@ -55,7 +55,7 @@
   .tile {
     min-width: 60px;
     min-height: 32px;
-    padding: 2px;
+    padding: 0; /* Remove padding to reduce gap */
     font-size: 0.85em;
   }
   .tile span {
