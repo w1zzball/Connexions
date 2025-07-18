@@ -45,25 +45,22 @@ export default function Setup() {
 
     return (
         <div id="setup">
-            <div style={{ display: 'flex', gap: '16px', marginBottom: '16px', justifyContent: 'center' }}>
-                <div>
-                    <span style={{ fontWeight: 'bold' }}>Questions: </span>
-                    <button onClick={removeQuestion} disabled={numQuestions <= 1}>-</button>
-                    <span style={{ margin: '0 8px' }}>{numQuestions}</span>
-                    <button onClick={addQuestion}>+</button>
-                </div>
-                <div>
-                    <span style={{ fontWeight: 'bold' }}>Answers: </span>
-                    <button onClick={removeAnswer} disabled={numAnswers <= 1}>-</button>
-                    <span style={{ margin: '0 8px' }}>{numAnswers}</span>
-                    <button onClick={addAnswer}>+</button>
-                </div>
-                <div>
-                    <span style={{ fontWeight: 'bold' }}>Lives: </span>
-                    <button onClick={() => setNumLives(numLives > 1 ? numLives - 1 : 1)} disabled={numLives <= 1}>-</button>
-                    <span style={{ margin: '0 8px' }}>{numLives}</span>
-                    <button onClick={() => setNumLives(numLives + 1)}>+</button>
-                </div>
+            <div id="setup-controls-grid">
+                <span className="setup-label">Questions</span>
+                <span className="setup-label">Answers</span>
+                <span className="setup-label">Lives</span>
+
+                <button className="setup-plus" onClick={addQuestion}>+</button>
+                <button className="setup-plus" onClick={addAnswer}>+</button>
+                <button className="setup-plus" onClick={() => setNumLives(numLives + 1)}>+</button>
+
+                <span className="setup-value">{numQuestions}</span>
+                <span className="setup-value">{numAnswers}</span>
+                <span className="setup-value">{numLives}</span>
+
+                <button className="setup-minus" onClick={removeQuestion} disabled={numQuestions <= 1}>-</button>
+                <button className="setup-minus" onClick={removeAnswer} disabled={numAnswers <= 1}>-</button>
+                <button className="setup-minus" onClick={() => setNumLives(numLives > 1 ? numLives - 1 : 1)} disabled={numLives <= 1}>-</button>
             </div>
             <div id="question-container">
                 {Array(numQuestions).fill(0).map((_, index) => (
