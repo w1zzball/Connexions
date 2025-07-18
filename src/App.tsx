@@ -123,7 +123,11 @@ function App() {
               Game Over
               <GuessSummary guessHistory={guessHistory} />
             </div> :
-              tileSet.length === 0 ? <div>You Win</div> :
+              tileSet.length === 0 ?
+                <div>
+                  You Win
+                  <GuessSummary guessHistory={guessHistory} />
+                </div> :
                 //todo -- add a summary of guesses here
                 //todo -- improve game over / win screen
                 <div id="play-area">
@@ -169,7 +173,7 @@ function App() {
                       className={selected.length != 4 ? 'disabled' : undefined}
                       onClick={selected.length != 4 ? undefined : submit}
                     >submit</button>
-                    <button onClick={() => setIsPlaying(old => !old)}>
+                    <button className="settings-button " onClick={() => setIsPlaying(old => !old)}>
                       <i className="fa-solid fa-gear"></i>
 
                     </button>
