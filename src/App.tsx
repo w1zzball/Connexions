@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import './App.css'
 import Tile from './components/Tile.tsx'
 import Row from './components/Row.tsx'
@@ -42,7 +42,7 @@ function questionSetsToTile(qSets: QuestionSet[]): TileType[] {
   return tileSet;
 }
 
-const initTileSet = questionSetsToTile(initQuestionSets);
+const initTileSet: TileType[] = questionSetsToTile(initQuestionSets);
 
 function App() {
   const [numQuestions, setNumQuestions] = useState(initQuestionSets.length);
@@ -56,7 +56,7 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(true);
   const [questionSets, setQuestionSets] = useState(initQuestionSets);
   const [isShaking, setIsShaking] = useState(false);
-  const shuffleTiles = () => {
+  const shuffleTiles = (): void => {
     setTileSet(shuffleArray(tileSet));
   }
 
@@ -64,10 +64,10 @@ function App() {
     return [...array].sort(() => Math.random() - 0.5);
   }
 
-  const submit = () => {
+  const submit = (): void => {
     // Helper to compare two arrays of tile ids regardless of order
-    const idsSorted = arr => arr.map(t => t.id).sort((a, b) => a - b);
-    const isSameSet = (a, b) => {
+    const idsSorted = (arr: TileType[]): number[] => arr.map(t => t.id).sort((a, b) => a - b);
+    const isSameSet = (a: TileType[], b: TileType[]): boolean => {
       const aIds = idsSorted(a);
       const bIds = idsSorted(b);
       return aIds.length === bIds.length && aIds.every((id, i) => id === bIds[i]);
@@ -94,7 +94,7 @@ function App() {
     }
   }
 
-  const handleSelect = (tile: TileType) => {
+  const handleSelect = (tile: TileType): void => {
     if (selected.some(t => t.id === tile.id)) {
       setSelected(selected.filter(t => t.id !== tile.id));
     } else {

@@ -14,3 +14,5 @@ export interface QuestionSet {
 export interface GuessSummaryProps {
     guessHistory: Tile[][];
 }
+
+export type SetQuestionSets = React.Dispatch<React.SetStateAction<QuestionSet[]>>;

@@ -8,7 +8,7 @@ export const GameConfigContext = createContext<{
     numLives: number;
     setNumLives: (n: number) => void;
     questionSets: QuestionSet[];
-    setQuestionSets: (sets: QuestionSet[]) => void;
+    setQuestionSets: (sets: QuestionSet[]) => any;
 } | undefined>(undefined);
 
 export function useGameConfig() {

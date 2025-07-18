@@ -1,5 +1,13 @@
 import './Tile.css'
-export default function Tile({ text, selected = false, shake = false, handleSelect }) {
+
+type TileProps = {
+  text: string;
+  selected?: boolean;
+  shake?: boolean;
+  handleSelect: () => void;
+};
+
+export default function Tile({ text, selected = false, shake = false, handleSelect }: TileProps) {
   return (
     <div
       className={`tile${shake ? ' shake' : ''}`}

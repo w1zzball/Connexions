@@ -1,41 +1,42 @@
 import QuestionArea from './QuestionArea.tsx'
 import { useGameConfig } from '../context/GameConfigContext.tsx'
+import type { QuestionSet } from '../types/types.tsx'
 import './Setup.css'
 
 export default function Setup() {
     const { numQuestions, setNumQuestions, numAnswers, setNumAnswers, numLives, setNumLives, questionSets, setQuestionSets } = useGameConfig();
 
     // Add a new question
-    const addQuestion = () => {
-        setNumQuestions(n => n + 1);
-        setQuestionSets(sets => [
-            ...sets,
+    const addQuestion = (): void => {
+        setNumQuestions(numQuestions + 1);
+        setQuestionSets([
+            ...questionSets,
             { question: '', answers: Array(numAnswers).fill(''), color: '#bb2b2b' }
         ]);
     };
 
     // Remove the last question
-    const removeQuestion = () => {
+    const removeQuestion = (): void => {
         if (numQuestions > 1) {
-            setNumQuestions(n => n - 1);
-            setQuestionSets(sets => sets.slice(0, -1));
+            setNumQuestions(numQuestions - 1);
+            setQuestionSets(questionSets.slice(0, -1));
         }
     };
 
     // Add a new answer to all questions
-    const addAnswer = () => {
-        setNumAnswers(n => n + 1);
-        setQuestionSets(sets => sets.map(q => ({
+    const addAnswer = (): void => {
+        setNumAnswers(numAnswers + 1);
+        setQuestionSets(questionSets.map((q: QuestionSet) => ({
             ...q,
             answers: [...q.answers, '']
         })));
     };
 
     // Remove the last answer from all questions
-    const removeAnswer = () => {
+    const removeAnswer = (): void => {
         if (numAnswers > 1) {
-            setNumAnswers(n => n - 1);
-            setQuestionSets(sets => sets.map(q => ({
+            setNumAnswers(numAnswers - 1);
+            setQuestionSets(questionSets.map((q: QuestionSet) => ({
                 ...q,
                 answers: q.answers.slice(0, -1)
             })));

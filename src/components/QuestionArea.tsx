@@ -1,6 +1,5 @@
 import './QuestionArea.css'
 import { useGameConfig } from '../context/GameConfigContext.tsx'
-import { useState } from 'react'
 
 export default function QuestionArea({ questionIndex }: { questionIndex: number }) {
     const { numAnswers, questionSets, setQuestionSets } = useGameConfig();
