@@ -75,6 +75,28 @@
     max-width: 100%;
   }
 
+  /* Move Submit and Settings to the top row, Shuffle and Deselect All to the bottom row */
+  #button-container button:nth-child(1) {
+    order: 3;
+  }
+
+  /* Shuffle */
+  #button-container button:nth-child(2) {
+    order: 4;
+  }
+
+  /* Deselect All */
+  #button-container button:nth-child(3) {
+    order: 1;
+  }
+
+  /* Submit */
+  #button-container button:nth-child(4) {
+    order: 2;
+  }
+
+  /* Settings */
+
   #button-container button,
   #button-container .back-button {
     font-size: 1.05em;
