@@ -2,6 +2,7 @@ import QuestionArea from './QuestionArea.tsx'
 import { useGameConfig } from '../context/GameConfigContext.tsx'
 import type { QuestionSet } from '../types/types.tsx'
 import './Setup.css'
+import { initQuestionSets } from '../App.tsx'
 
 export default function Setup() {
     const { numQuestions, setNumQuestions, numAnswers, setNumAnswers, numLives, setNumLives, questionSets, setQuestionSets } = useGameConfig();
@@ -43,6 +44,17 @@ export default function Setup() {
         }
     };
 
+    // Reset grid to default state (from App.tsx)
+    const resetGrid = (): void => {
+        setNumQuestions(initQuestionSets.length);
+        setNumAnswers(initQuestionSets[0]?.answers.length || 2);
+        setNumLives(4);
+        setQuestionSets(initQuestionSets.map(qs => ({
+            ...qs,
+            answers: [...qs.answers]
+        })));
+    };
+
     return (
         <div id="setup">
             <div id="setup-controls-grid">
@@ -62,6 +74,9 @@ export default function Setup() {
                 <button className="setup-minus" onClick={removeAnswer} disabled={numAnswers <= 1}>-</button>
                 <button className="setup-minus" onClick={() => setNumLives(numLives > 1 ? numLives - 1 : 1)} disabled={numLives <= 1}>-</button>
             </div>
+            <button className="setup-reset" onClick={resetGrid} title="Reset to default">
+                Reset
+            </button>
             <div id="question-container">
                 {Array(numQuestions).fill(0).map((_, index) => (
                     <QuestionArea key={index} questionIndex={index} />

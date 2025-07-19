@@ -8,7 +8,7 @@ import { GameConfigContext } from './context/GameConfigContext.tsx';
 import type { Tile as TileType, QuestionSet } from './types/types.tsx';
 import GuessSummary from './components/GuessSummary.tsx';
 
-let initQuestionSets: QuestionSet[] = [
+export const initQuestionSets: QuestionSet[] = [
   {
     question: "types of fruit",
     answers: ["Apple", "Banana", "Orange", "Grape"],
