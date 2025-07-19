@@ -170,6 +170,7 @@ function App() {
                           selected={selected.some(t => t.id === tile.id)}
                           shake={isShaking && selected.some(t => t.id === tile.id)}
                           handleSelect={() => handleSelect(tile)}
+                          numAnswers={numAnswers} // pass grid size
                         />
                       </motion.div>
                     ))}
