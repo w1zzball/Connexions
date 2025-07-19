@@ -32,37 +32,51 @@
 }
 
 @media (max-width: 600px) {
-  #board {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2px;
-    margin-bottom: 1rem;
-    width: 100vw;
-    max-width: 100vw;
-    min-width: 0;
-  }
   #root {
     padding: 0.5rem;
     min-width: 0;
     width: 100vw;
     box-sizing: border-box;
-  }
-  #button-container {
+    display: flex;
     flex-direction: column;
-    gap: 0.5rem;
     align-items: stretch;
+    height: 100vh;
+    max-width: 100vw;
+  }
+
+  #board {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    margin-bottom: 0.5rem;
+    width: 100vw;
+    max-width: 100vw;
+    min-width: 0;
+    height: 60vh;
+    min-height: 250px;
+  }
+
+  #button-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0.5rem;
     width: 100%;
     max-width: 340px;
     margin: 0 auto;
     box-sizing: border-box;
     padding: 0 8px;
+    align-items: stretch;
+    justify-items: stretch;
   }
-  #button-container > * {
+
+  #button-container>* {
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
     margin: 0;
     max-width: 100%;
   }
+
   #button-container button,
   #button-container .back-button {
     font-size: 1.05em;
