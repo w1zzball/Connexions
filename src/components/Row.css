@@ -29,15 +29,23 @@
 
 @media (max-width: 600px) {
   .row {
-    min-width: 60px;
-    min-height: 32px;
-    padding: 0; /* Remove padding to reduce gap */
-    margin: 1px 0; /* Reduce margin to minimize gap */
-    font-size: 0.85em;
-  }
-  .row p {
-    font-size: 0.85em;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
     padding: 0;
+  }
+
+  .row .question,
+  .row .tile-string {
+    font-size: 0.95em;
     margin: 0;
+    padding: 0;
+    text-align: center;
+    word-break: break-word;
   }
 }
