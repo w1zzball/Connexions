@@ -16,6 +16,7 @@
 
 .tile span {
   white-space: normal;
+  hyphens: auto;
   word-break: break-word;
   text-align: center;
   font-weight: bold;
