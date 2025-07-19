@@ -200,6 +200,9 @@ function App() {
               <i className="fa-solid fa-arrow-left"></i>
             </button>
             <Setup />
+            <button className="back-button" onClick={() => setIsPlaying(old => !old)}>
+              <i className="fa-solid fa-arrow-left"></i>
+            </button>
 
           </div>
 
