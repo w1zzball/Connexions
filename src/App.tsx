@@ -114,6 +114,21 @@ function App() {
     }
   }, [questionSets, isPlaying, numLives]);
 
+  //TODO change win lose announcement to a modal or something nicer
+  //TODO change already guessed alert to a toast or something less intrusive
+  //TODO add url params to save game state (nuqs)
+  //TODO add CTA to setup component
+  //TODO add CTA to copy game link
+  //TODO add favicon
+  //TODO make row answers elipsis out or make it scrollable
+  //TODO improve accessibility (ARIA labels, keyboard navigation, focus management)
+  //TODO add animations for solved rows or transitions
+  //TODO persist game state in localStorage
+  //TODO improve color picker UI and validate color contrast
+  //TODO add instructions/help modal
+  //TODO add dark/light theme
+
+
   return (
     <GameConfigContext.Provider
       value={{ numQuestions, setNumQuestions, numAnswers, setNumAnswers, numLives, setNumLives, questionSets, setQuestionSets }}>
@@ -130,8 +145,6 @@ function App() {
                   You Win
                   <GuessSummary guessHistory={guessHistory} />
                 </div> :
-                //todo -- add a summary of guesses here
-                //todo -- improve game over / win screen
                 <div id="play-area">
                   {/* solved rows*/}
                   <div style={{ marginBottom: '16px' }}>
