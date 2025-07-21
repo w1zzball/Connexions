@@ -4,6 +4,8 @@ import './App.css'
 import Tile from './components/Tile.tsx'
 import Row from './components/Row.tsx'
 import Setup from './components/Setup.tsx'
+
+import Modal from './components/Modal.tsx'
 import { GameConfigContext } from './context/GameConfigContext.tsx';
 import type { Tile as TileType, QuestionSet } from './types/types.tsx';
 import GuessSummary from './components/GuessSummary.tsx';
@@ -133,6 +135,11 @@ function App() {
     <GameConfigContext.Provider
       value={{ numQuestions, setNumQuestions, numAnswers, setNumAnswers, numLives, setNumLives, questionSets, setQuestionSets }}>
       <>
+        <div id="modal-container">
+          <Modal>
+          <p>test</p>
+          </Modal>
+        </div>
 
         {isPlaying ?
           <div id="game">
