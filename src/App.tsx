@@ -41,7 +41,7 @@ function shuffleArray<T>(array: T[]): T[] {
 
 let tileIdCounter = 0;
 function questionSetsToTile(qSets: QuestionSet[]): TileType[] {
-  let tileSet: TileType[] = [];
+    const tileSet: TileType[] = [];
   qSets.forEach(qSet => {
     qSet.answers.forEach(ans => {
       tileSet.push({ question: qSet.question, text: ans, color: qSet.color, id: tileIdCounter++ });
@@ -106,8 +106,8 @@ function App() {
       return;
     }
     if (selected.length !== numAnswers) return;
-    let question = selected[0]?.question;
-    let isCorrect: boolean = selected.reduce((acc, tile) =>
+    const question = selected[0]?.question;
+    const isCorrect: boolean = selected.reduce((acc, tile) =>
       acc && tile.question === question
       , true)
     if (isCorrect) {
