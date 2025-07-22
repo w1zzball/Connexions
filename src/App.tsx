@@ -61,11 +61,18 @@ function App() {
   const shuffleTiles = (): void => {
     setTileSet(shuffleArray(tileSet));
   }
-  const [modalVisible, setModalVisible] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const toggleModal = (): void => {
     setModalVisible(!modalVisible);
   }
+
+  // Show modal on win or lose
+  useEffect(() => {
+    if (lives === 0 || tileSet.length === 0) {
+      setModalVisible(true);
+    }
+  }, [lives, tileSet.length]);
 
   function shuffleArray<T>(array: T[]): T[] {
     return [...array].sort(() => Math.random() - 0.5);
@@ -140,23 +147,24 @@ function App() {
     <GameConfigContext.Provider
       value={{ numQuestions, setNumQuestions, numAnswers, setNumAnswers, numLives, setNumLives, questionSets, setQuestionSets }}>
       <>
-        <div id="modal-container">
-          <Modal isVisible={modalVisible} onClose={toggleModal}>
+        {/* <div id="modal-container">
+          <Modal isVisible={true} onClose={toggleModal}>
             <p>test</p>
           </Modal>
-        </div>
+        </div> */}
 
         {isPlaying ?
           <div id="game">
-            {lives == 0 ? <div>
-              Game Over
-              <GuessSummary guessHistory={guessHistory} />
-            </div> :
+            {lives == 0 ?
+              <Modal isVisible={modalVisible} onClose={toggleModal}>
+                Game Over
+                <GuessSummary guessHistory={guessHistory} />
+              </Modal> :
               tileSet.length === 0 ?
-                <div>
+                <Modal isVisible={modalVisible} onClose={toggleModal}>
                   You Win
                   <GuessSummary guessHistory={guessHistory} />
-                </div> :
+                </Modal> :
                 <div id="play-area">
                   {/* solved rows*/}
                   <div style={{ marginBottom: '16px' }}>
