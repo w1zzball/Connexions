@@ -61,6 +61,11 @@ function App() {
   const shuffleTiles = (): void => {
     setTileSet(shuffleArray(tileSet));
   }
+  const [modalVisible, setModalVisible] = useState(true);
+
+  const toggleModal = (): void => {
+    setModalVisible(!modalVisible);
+  }
 
   function shuffleArray<T>(array: T[]): T[] {
     return [...array].sort(() => Math.random() - 0.5);
@@ -136,8 +141,8 @@ function App() {
       value={{ numQuestions, setNumQuestions, numAnswers, setNumAnswers, numLives, setNumLives, questionSets, setQuestionSets }}>
       <>
         <div id="modal-container">
-          <Modal>
-          <p>test</p>
+          <Modal isVisible={modalVisible} onClose={toggleModal}>
+            <p>test</p>
           </Modal>
         </div>
 
