@@ -129,7 +129,7 @@ function App() {
   }, [questionSets, isPlaying, numLives]);
 
   //FIX: player can still select tiles after game over
-
+  //TODO add one away toast
   //TODO change win lose announcement to a modal or something nicer
   //TODO change already guessed alert to a toast or something less intrusive
   //TODO add url params to save game state (nuqs)
@@ -214,8 +214,8 @@ function App() {
                   onClick={selected.length < 1 ? undefined : () => setSelected([])}
                 >Deselect All</button>
                 <button
-                  className={selected.length !== numAnswers ? 'disabled' : undefined}
-                  onClick={selected.length !== numAnswers ? undefined : submit}
+                  className={selected.length !== numAnswers || lives === 0 ? 'disabled' : undefined}
+                  onClick={selected.length !== numAnswers || lives === 0 ? undefined : submit}
                 >Submit</button>
                 <button className="settings-button " onClick={() => setIsPlaying(old => !old)}>
                   <i className="fa-solid fa-gear"></i>
