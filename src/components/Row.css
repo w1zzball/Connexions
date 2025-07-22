@@ -37,7 +37,7 @@
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    padding: 0;
+    padding: 0.8rem;
   }
 
   .row .question,
