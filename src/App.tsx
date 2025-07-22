@@ -157,13 +157,19 @@ function App() {
           <div id="game">
             {lives == 0 ?
               <Modal isVisible={modalVisible} onClose={toggleModal}>
-                Game Over
+                <h2>Game Over</h2>
                 <GuessSummary guessHistory={guessHistory} />
+                <button style={{ marginTop: '30px' }} className="back-button" onClick={toggleModal}>
+                  <i className="fa-solid fa-arrow-left"></i>
+                </button>
               </Modal> :
               tileSet.length === 0 ?
                 <Modal isVisible={modalVisible} onClose={toggleModal}>
-                  You Win
+                  <h2>You Win</h2>
                   <GuessSummary guessHistory={guessHistory} />
+                  <button style={{ marginTop: '30px' }} className="back-button" onClick={toggleModal}>
+                    <i className="fa-solid fa-arrow-left"></i>
+                  </button>
                 </Modal> :
                 <div id="play-area">
                   {/* solved rows*/}
