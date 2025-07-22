@@ -9,6 +9,7 @@ import Modal from './components/Modal.tsx'
 import { GameConfigContext } from './context/GameConfigContext.tsx';
 import type { Tile as TileType, QuestionSet } from './types/types.tsx';
 import GuessSummary from './components/GuessSummary.tsx';
+import Toast from './components/Toast.tsx';
 
 export const initQuestionSets: QuestionSet[] = [
   {
@@ -68,6 +69,7 @@ function App() {
     setTileSet(shuffleArray(tileSet));
   }
   const [modalVisible, setModalVisible] = useState(false);
+  const [toastState, setToastState] = useState({ isVisible: false, message: '' });
 
   const toggleModal = (): void => {
     setModalVisible(!modalVisible);
@@ -85,6 +87,12 @@ function App() {
   }
 
   const submit = (): void => {
+    const answerTally: { [key: string]: number } = selected.reduce((acc: { [key: string]: number }, curr) => {
+      acc[curr.question] = (acc[curr.question] || 0) + 1;
+      return acc;
+    }, {});
+    const isOneOff = Object.values(answerTally).some((count) => count === 3);
+
     // Helper to compare two arrays of tile ids regardless of order
     const idsSorted = (arr: TileType[]): number[] => arr.map(t => t.id).sort((a, b) => a - b);
     const isSameSet = (a: TileType[], b: TileType[]): boolean => {
@@ -93,7 +101,8 @@ function App() {
       return aIds.length === bIds.length && aIds.every((id, i) => id === bIds[i]);
     };
     if (guessHistory.some(g => isSameSet(g, selected))) {
-      alert("You have already guessed this combination.");
+      setToastState({ isVisible: true, message: "already guessed!" })
+      setTimeout(() => setToastState({ isVisible: false, message: "" }), 1200)
       return;
     }
     if (selected.length !== numAnswers) return;
@@ -106,7 +115,12 @@ function App() {
       setTileSet(prevTileSet => prevTileSet.filter(tile => !selected.some(sel => sel.id === tile.id)));
       setSelected([]);
       setGuessHistory(old => [...old, selected]);
+
     } else {
+      if (isOneOff) {
+        setToastState({ isVisible: true, message: "one off!" })
+        setTimeout(() => setToastState({ isVisible: false, message: "" }), 1200)
+      }
       setGuessHistory(old => [...old, selected]);
       setLives(lives - 1);
       setIsShaking(true);
@@ -161,9 +175,11 @@ function App() {
   };
 
   return (
+
     <GameConfigContext.Provider
       value={{ numQuestions, setNumQuestions, numAnswers, setNumAnswers, numLives, setNumLives, questionSets, setQuestionSets }}>
       <>
+        <Toast isVisible={toastState.isVisible} message={toastState.message} />
         {isPlaying ?
           <div id="game">
             <div id="play-area">
