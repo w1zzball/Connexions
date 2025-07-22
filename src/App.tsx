@@ -91,7 +91,7 @@ function App() {
       acc[curr.question] = (acc[curr.question] || 0) + 1;
       return acc;
     }, {});
-    const isOneOff = Object.values(answerTally).some((count) => count === 3);
+    const isOneOff = Object.values(answerTally).some((count) => count === numAnswers - 1);
 
     // Helper to compare two arrays of tile ids regardless of order
     const idsSorted = (arr: TileType[]): number[] => arr.map(t => t.id).sort((a, b) => a - b);
