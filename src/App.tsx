@@ -143,96 +143,105 @@ function App() {
   //TODO add dark/light theme
 
 
+  // Handler to fully reset the game (for Play Again)
+  const resetGame = () => {
+    setGuessHistory([]);
+    setTileSet(shuffleArray(questionSetsToTile(questionSets)));
+    setSolvedTiles([]);
+    setSelected([]);
+    setLives(numLives);
+    setModalVisible(false);
+  };
+
   return (
     <GameConfigContext.Provider
       value={{ numQuestions, setNumQuestions, numAnswers, setNumAnswers, numLives, setNumLives, questionSets, setQuestionSets }}>
       <>
-        {/* <div id="modal-container">
-          <Modal isVisible={true} onClose={toggleModal}>
-            <p>test</p>
-          </Modal>
-        </div> */}
-
         {isPlaying ?
           <div id="game">
-            {lives == 0 ?
-              <Modal isVisible={modalVisible} onClose={toggleModal}>
-                <h2>Game Over</h2>
-                <GuessSummary guessHistory={guessHistory} />
-                <button style={{ marginTop: '30px' }} className="back-button" onClick={toggleModal}>
-                  <i className="fa-solid fa-arrow-left"></i>
-                </button>
-              </Modal> :
-              tileSet.length === 0 ?
-                <Modal isVisible={modalVisible} onClose={toggleModal}>
-                  <h2>You Win</h2>
-                  <GuessSummary guessHistory={guessHistory} />
-                  <button style={{ marginTop: '30px' }} className="back-button" onClick={toggleModal}>
-                    <i className="fa-solid fa-arrow-left"></i>
-                  </button>
-                </Modal> :
-                <div id="play-area">
-                  {/* solved rows*/}
-                  <div style={{ marginBottom: '16px' }}>
-                    {solvedTiles.map((tiles, index) => (
-                      <Row
-                        key={index}
-                        color={tiles[0]?.color}
-                        question={tiles[0]?.question}
-                        tileString={tiles.map(tile => tile.text).join(', ')}
-                      />
-                    ))}
-                  </div>
-                  <div
-                    id="board"
-                    style={{
-                      display: 'grid',
-                      gridTemplateColumns: `repeat(${numAnswers}, 1fr)`,
-                      gap: '12px',
-                      justifyItems: 'stretch',
-                      alignItems: 'center',
-                      width: '100%',
-                      margin: '0 auto',
-                    }}
+            <div id="play-area">
+              {/* solved rows*/}
+              <div style={{ marginBottom: '16px' }}>
+                {solvedTiles.map((tiles, index) => (
+                  <Row
+                    key={index}
+                    color={tiles[0]?.color}
+                    question={tiles[0]?.question}
+                    tileString={tiles.map(tile => tile.text).join(', ')}
+                  />
+                ))}
+              </div>
+              <div
+                id="board"
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: `repeat(${numAnswers}, 1fr)`,
+                  gap: '12px',
+                  justifyItems: 'stretch',
+                  alignItems: 'center',
+                  width: '100%',
+                  margin: '0 auto',
+                }}
+              >
+                {tileSet.map(tile => (
+                  <motion.div
+                    key={tile.id}
+                    layout
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.8, opacity: 0 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                   >
-                    {tileSet.map(tile => (
-                      <motion.div
-                        key={tile.id}
-                        layout
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 0.8, opacity: 0 }}
-                        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                      >
-                        <Tile
-                          text={tile.text}
-                          selected={selected.some(t => t.id === tile.id)}
-                          shake={isShaking && selected.some(t => t.id === tile.id)}
-                          handleSelect={() => handleSelect(tile)}
-                          numAnswers={numAnswers} // pass grid size
-                        />
-                      </motion.div>
-                    ))}
-                  </div>
-                  <div id="mistakes-counter">
-                    <p>Mistakes Remaining:  {"● ".repeat(lives)}</p>
-                  </div>
-                  <div id="button-container">
-                    <button onClick={shuffleTiles}>Shuffle</button>
-                    <button
-                      className={selected.length < 1 ? 'disabled' : undefined}
-                      onClick={selected.length < 1 ? undefined : () => setSelected([])}
-                    >Deselect All</button>
-                    <button
-                      className={selected.length !== numAnswers ? 'disabled' : undefined}
-                      onClick={selected.length !== numAnswers ? undefined : submit}
-                    >Submit</button>
-                    <button className="settings-button " onClick={() => setIsPlaying(old => !old)}>
-                      <i className="fa-solid fa-gear"></i>
+                    <Tile
+                      text={tile.text}
+                      selected={selected.some(t => t.id === tile.id)}
+                      shake={isShaking && selected.some(t => t.id === tile.id)}
+                      handleSelect={() => handleSelect(tile)}
+                      numAnswers={numAnswers} // pass grid size
+                    />
+                  </motion.div>
+                ))}
+              </div>
+              <div id="mistakes-counter">
+                <p>Mistakes Remaining:  {"● ".repeat(lives)}</p>
+              </div>
+              <div id="button-container">
+                <button onClick={shuffleTiles}>Shuffle</button>
+                <button
+                  className={selected.length < 1 ? 'disabled' : undefined}
+                  onClick={selected.length < 1 ? undefined : () => setSelected([])}
+                >Deselect All</button>
+                <button
+                  className={selected.length !== numAnswers ? 'disabled' : undefined}
+                  onClick={selected.length !== numAnswers ? undefined : submit}
+                >Submit</button>
+                <button className="settings-button " onClick={() => setIsPlaying(old => !old)}>
+                  <i className="fa-solid fa-gear"></i>
+                </button>
+              </div>
+            </div>
+            {/* Overlay modal if game is over */}
+            {modalVisible && (lives === 0 || tileSet.length === 0) && (
+              <Modal isVisible={modalVisible} onClose={toggleModal}>
+                {lives === 0 ? (
+                  <>
+                    <h2>Game Over</h2>
+                    <GuessSummary guessHistory={guessHistory} />
+                    <button style={{ marginTop: '30px' }} className="back-button" onClick={resetGame}>
+                      <i className="fa-solid fa-arrow-rotate-left"></i> Play Again
                     </button>
-                  </div>
-                </div>
-            }
+                  </>
+                ) : (
+                  <>
+                    <h2>You Win</h2>
+                    <GuessSummary guessHistory={guessHistory} />
+                    <button style={{ marginTop: '30px' }} className="back-button" onClick={resetGame}>
+                      <i className="fa-solid fa-arrow-rotate-left"></i> Play Again
+                    </button>
+                  </>
+                )}
+              </Modal>
+            )}
           </div>
           :
           <div>
@@ -243,11 +252,8 @@ function App() {
             <button className="back-button" onClick={() => setIsPlaying(old => !old)}>
               <i className="fa-solid fa-arrow-left"></i>
             </button>
-
           </div>
-
         }
-
       </>
     </GameConfigContext.Provider>
   )
