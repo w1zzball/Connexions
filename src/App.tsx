@@ -148,8 +148,6 @@ function App() {
     }
   }, [questionSets, isPlaying, numLives]);
 
-  //TODO add one away toast
-  //TODO change already guessed alert to a toast or something less intrusive
   //TODO add url params to save game state (nuqs)
   //TODO add CTA to setup component
   //TODO add CTA to copy game link
