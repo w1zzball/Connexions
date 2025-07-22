@@ -33,6 +33,11 @@ export const initQuestionSets: QuestionSet[] = [
   },
 ]
 
+
+function shuffleArray<T>(array: T[]): T[] {
+  return [...array].sort(() => Math.random() - 0.5);
+}
+
 let tileIdCounter = 0;
 function questionSetsToTile(qSets: QuestionSet[]): TileType[] {
   let tileSet: TileType[] = [];
@@ -41,7 +46,8 @@ function questionSetsToTile(qSets: QuestionSet[]): TileType[] {
       tileSet.push({ question: qSet.question, text: ans, color: qSet.color, id: tileIdCounter++ });
     });
   });
-  return tileSet;
+  // shuffle the tileSet before returning
+  return shuffleArray(tileSet);
 }
 
 const initTileSet: TileType[] = questionSetsToTile(initQuestionSets);
@@ -147,6 +153,7 @@ function App() {
 
   // Handler to fully reset the game (for Play Again)
   const resetGame = () => {
+    tileIdCounter = 0;
     setGuessHistory([]);
     setTileSet(shuffleArray(questionSetsToTile(questionSets)));
     setSolvedTiles([]);
