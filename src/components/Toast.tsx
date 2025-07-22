@@ -1,5 +1,7 @@
 import './Toast.css';
 export default function Toast({ isVisible, message }) {
+    //do not show toast if not visible and no message
+    if (!isVisible && !message) return null;
     return (
         <div
             className="toast"
