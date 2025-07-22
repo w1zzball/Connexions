@@ -134,9 +134,7 @@ function App() {
     }
   }, [questionSets, isPlaying, numLives]);
 
-  //FIX: player can still select tiles after game over
   //TODO add one away toast
-  //TODO change win lose announcement to a modal or something nicer
   //TODO change already guessed alert to a toast or something less intrusive
   //TODO add url params to save game state (nuqs)
   //TODO add CTA to setup component
