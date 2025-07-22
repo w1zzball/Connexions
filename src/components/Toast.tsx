@@ -1,5 +1,6 @@
 import './Toast.css';
-export default function Toast({ isVisible, message }) {
+import type { ToastProps } from '../types/types';
+export default function Toast({ isVisible, message }: ToastProps) {
     //do not show toast if not visible and no message
     if (!isVisible && !message) return null;
     return (
