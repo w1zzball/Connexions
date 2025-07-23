@@ -202,6 +202,7 @@ function App() {
     setLives(numLives);
   };
 
+  //FIXME guessHistory array lacks keys
   //TODO add url params to save game state (nuqs)
   //TODO add CTA to setup component
   //TODO add CTA to copy game link
@@ -209,7 +210,6 @@ function App() {
   //TODO make row answers elipsis out or make it scrollable
   //TODO improve accessibility (ARIA labels, keyboard navigation, focus management)
   //TODO add animations for solved rows or transitions
-  //TODO persist game state in localStorage
   //TODO improve color picker UI and validate color contrast
   //TODO add instructions/help modal
   //TODO add dark/light theme
