@@ -11,6 +11,18 @@ import type { Tile as TileType, QuestionSet } from "./types/types.tsx";
 import GuessSummary from "./components/GuessSummary.tsx";
 import Toast from "./components/Toast.tsx";
 
+//FIXME guessHistory array lacks keys
+//TODO add url params to save game state (nuqs)
+//TODO add CTA to setup component
+//TODO add CTA to copy game link
+//TODO add favicon
+//TODO make row answers elipsis out or make it scrollable
+//TODO improve accessibility (ARIA labels, keyboard navigation, focus management)
+//TODO add animations for solved rows or transitions
+//TODO improve color picker UI and validate color contrast
+//TODO add instructions/help modal
+//TODO add dark/light theme
+
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
 }
@@ -74,14 +86,6 @@ function App() {
     isVisible: false,
     message: "",
   });
-
-  useEffect(() => {
-    const stateString = localStorage.getItem("gameState");
-    const gameState = JSON.parse(stateString);
-    if (gameState) {
-      console.log("data loaded:", gameState);
-    }
-  }, []);
 
   // save to local storage on change
   useEffect(() => {
@@ -201,18 +205,6 @@ function App() {
     setSelected([]);
     setLives(numLives);
   };
-
-  //FIXME guessHistory array lacks keys
-  //TODO add url params to save game state (nuqs)
-  //TODO add CTA to setup component
-  //TODO add CTA to copy game link
-  //TODO add favicon
-  //TODO make row answers elipsis out or make it scrollable
-  //TODO improve accessibility (ARIA labels, keyboard navigation, focus management)
-  //TODO add animations for solved rows or transitions
-  //TODO improve color picker UI and validate color contrast
-  //TODO add instructions/help modal
-  //TODO add dark/light theme
 
   // Handler to fully reset the game (for Play Again)
   const resetGame = () => {
