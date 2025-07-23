@@ -51,14 +51,20 @@ function App() {
   );
   const [lives, setLives] = useState(() => gameState.lives ?? 4);
 
-  const [tileSet, setTileSet] = useState<TileType[]>(() =>
-    shuffleArray(initTileSet),
+  const [tileSet, setTileSet] = useState<TileType[]>(
+    () => gameState.tileSet ?? shuffleArray(initTileSet),
   );
   const [selected, setSelected] = useState<TileType[]>([]);
-  const [solvedTiles, setSolvedTiles] = useState<TileType[][]>([]);
-  const [guessHistory, setGuessHistory] = useState<TileType[][]>([]);
+  const [solvedTiles, setSolvedTiles] = useState<TileType[][]>(
+    () => gameState.solvedTiles ?? [],
+  );
+  const [guessHistory, setGuessHistory] = useState<TileType[][]>(
+    () => gameState.guessHistory ?? [],
+  );
   const [isPlaying, setIsPlaying] = useState(true);
-  const [questionSets, setQuestionSets] = useState(initQuestionSets);
+  const [questionSets, setQuestionSets] = useState(
+    () => gameState.questionSets ?? initQuestionSets,
+  );
   const [isShaking, setIsShaking] = useState(false);
   const shuffleTiles = (): void => {
     setTileSet(shuffleArray(tileSet));
@@ -84,6 +90,10 @@ function App() {
       numAnswers,
       numLives,
       lives,
+      tileSet,
+      solvedTiles,
+      guessHistory,
+      questionSets,
     };
 
     const stateString = JSON.stringify(gameState);
@@ -95,6 +105,10 @@ function App() {
     numAnswers,
     numLives,
     lives,
+    tileSet,
+    solvedTiles,
+    guessHistory,
+    questionSets,
   ]);
 
   const toggleModal = (): void => {
