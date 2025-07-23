@@ -61,21 +61,21 @@ function App() {
   const [numLives, setNumLives] = useState(() =>
     gameState ? gameState.numLives : 4,
   );
-  const [lives, setLives] = useState(() => gameState.lives ?? 4);
+  const [lives, setLives] = useState(() => (gameState ? gameState.lives : 4));
 
-  const [tileSet, setTileSet] = useState<TileType[]>(
-    () => gameState.tileSet ?? shuffleArray(initTileSet),
+  const [tileSet, setTileSet] = useState<TileType[]>(() =>
+    gameState ? gameState.tileSet : shuffleArray(initTileSet),
   );
   const [selected, setSelected] = useState<TileType[]>([]);
   const [solvedTiles, setSolvedTiles] = useState<TileType[][]>(
-    () => gameState.solvedTiles ?? [],
+    () => gameState ? gameState.solvedTiles : [],
   );
   const [guessHistory, setGuessHistory] = useState<TileType[][]>(
-    () => gameState.guessHistory ?? [],
+    () => gameState ? gameState.guessHistory : [],
   );
   const [isPlaying, setIsPlaying] = useState(true);
   const [questionSets, setQuestionSets] = useState(
-    () => gameState.questionSets ?? initQuestionSets,
+    () => gameState ? gameState.questionSets : initQuestionSets,
   );
   const [isShaking, setIsShaking] = useState(false);
   const shuffleTiles = (): void => {
