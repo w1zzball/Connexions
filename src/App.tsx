@@ -102,7 +102,6 @@ function App() {
 
     const stateString = JSON.stringify(gameState);
     localStorage.setItem("gameState", stateString);
-    console.log("saving data", gameState);
   }, [
     //state data to track
     numQuestions,
