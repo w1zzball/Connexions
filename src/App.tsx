@@ -35,12 +35,22 @@ function questionSetsToTile(qSets: QuestionSet[]): TileType[] {
 const initTileSet: TileType[] = questionSetsToTile(initQuestionSets);
 
 function App() {
-  const [numQuestions, setNumQuestions] = useState(initQuestionSets.length);
-  const [numAnswers, setNumAnswers] = useState(
-    initQuestionSets[0]?.answers.length || 4,
+  //attempt to get state from localStorage
+  const stateString = localStorage.getItem("gameState");
+  const gameState = stateString ? JSON.parse(stateString) : null;
+
+  //
+  const [numQuestions, setNumQuestions] = useState(() =>
+    gameState ? gameState.numQuestions : initQuestionSets.length,
   );
-  const [numLives, setNumLives] = useState(4);
-  const [lives, setLives] = useState(4);
+  const [numAnswers, setNumAnswers] = useState(() =>
+    gameState ? gameState.numAnswers : initQuestionSets[0].answers.length,
+  );
+  const [numLives, setNumLives] = useState(() =>
+    gameState ? gameState.numLives : 4,
+  );
+  const [lives, setLives] = useState(() => gameState.lives ?? 4);
+
   const [tileSet, setTileSet] = useState<TileType[]>(() =>
     shuffleArray(initTileSet),
   );
@@ -58,6 +68,34 @@ function App() {
     isVisible: false,
     message: "",
   });
+
+  useEffect(() => {
+    const stateString = localStorage.getItem("gameState");
+    const gameState = JSON.parse(stateString);
+    if (gameState) {
+      console.log("data loaded:", gameState);
+    }
+  }, []);
+
+  // save to local storage on change
+  useEffect(() => {
+    const gameState = {
+      numQuestions,
+      numAnswers,
+      numLives,
+      lives,
+    };
+
+    const stateString = JSON.stringify(gameState);
+    localStorage.setItem("gameState", stateString);
+    console.log("saving data", gameState);
+  }, [
+    //state data to track
+    numQuestions,
+    numAnswers,
+    numLives,
+    lives,
+  ]);
 
   const toggleModal = (): void => {
     setModalVisible(!modalVisible);
@@ -141,15 +179,14 @@ function App() {
     }
   };
   // reset game state when the number of questions changes or when the game is toggled
-  useEffect(() => {
-    if (isPlaying) {
-      setGuessHistory([]);
-      setTileSet(shuffleArray(questionSetsToTile(questionSets)));
-      setSolvedTiles([]);
-      setSelected([]);
-      setLives(numLives);
-    }
-  }, [questionSets, isPlaying, numLives]);
+  const handleBack = () => {
+    setIsPlaying((old) => !old);
+    setGuessHistory([]);
+    setTileSet(shuffleArray(questionSetsToTile(questionSets)));
+    setSolvedTiles([]);
+    setSelected([]);
+    setLives(numLives);
+  };
 
   //TODO add url params to save game state (nuqs)
   //TODO add CTA to setup component
@@ -306,17 +343,11 @@ function App() {
           </div>
         ) : (
           <div>
-            <button
-              className="back-button"
-              onClick={() => setIsPlaying((old) => !old)}
-            >
+            <button className="back-button" onClick={handleBack}>
               <i className="fa-solid fa-arrow-left"></i>
             </button>
             <Setup />
-            <button
-              className="back-button"
-              onClick={() => setIsPlaying((old) => !old)}
-            >
+            <button className="back-button" onClick={handleBack}>
               <i className="fa-solid fa-arrow-left"></i>
             </button>
           </div>
