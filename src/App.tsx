@@ -4,35 +4,12 @@ import "./App.css";
 import Tile from "./components/Tile.tsx";
 import Row from "./components/Row.tsx";
 import Setup from "./components/Setup.tsx";
-
+import initQuestionSets from "./static/initQuestions.tsx";
 import Modal from "./components/Modal.tsx";
 import { GameConfigContext } from "./context/GameConfigContext.tsx";
 import type { Tile as TileType, QuestionSet } from "./types/types.tsx";
 import GuessSummary from "./components/GuessSummary.tsx";
 import Toast from "./components/Toast.tsx";
-
-export const initQuestionSets: QuestionSet[] = [
-  {
-    question: "types of fruit",
-    answers: ["Apple", "Banana", "Orange", "Grape"],
-    color: "#F9DF6D",
-  },
-  {
-    question: "COLOuRs",
-    answers: ["Red", "Blue", "Green", "Yellow"],
-    color: "#A0C35A",
-  },
-  {
-    question: "ANIMALs",
-    answers: ["Dog", "Cat", "Horse", "Cow"],
-    color: "#B0C4EF",
-  },
-  {
-    question: "COUNTRies",
-    answers: ["France", "Japan", "Brazil", "Canada"],
-    color: "#BA81C5",
-  },
-];
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);

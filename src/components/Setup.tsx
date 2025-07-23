@@ -2,7 +2,7 @@ import QuestionArea from './QuestionArea.tsx'
 import { useGameConfig } from '../context/GameConfigContext.tsx'
 import type { QuestionSet } from '../types/types.tsx'
 import './Setup.css'
-import { initQuestionSets } from '../App.tsx'
+import initQuestionSets from '../static/initQuestions.tsx'
 
 export default function Setup() {
     const { numQuestions, setNumQuestions, numAnswers, setNumAnswers, numLives, setNumLives, questionSets, setQuestionSets } = useGameConfig();
