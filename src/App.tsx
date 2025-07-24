@@ -354,7 +354,7 @@ function App() {
                   className="settings-button "
                   onClick={() => setIsPlaying((old) => !old)}
                 >
-                  <i className="fa-solid fa-gear"></i>
+                  Customise Game <i className="fa-solid fa-gear"></i>
                 </button>
                 <button
                   className="share-button"
@@ -371,7 +371,7 @@ function App() {
                     );
                   }}
                 >
-                  <i className="fa-solid fa-share"></i>
+                  <i className="fa-solid fa-copy"></i> Copy Link Game
                 </button>
               </div>
             </div>
