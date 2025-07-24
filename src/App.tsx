@@ -346,6 +346,10 @@ function App() {
                 >
                   Submit
                 </button>
+              </div>
+              <div
+                id="button-container-secondary"
+              >
                 <button
                   className="settings-button "
                   onClick={() => setIsPlaying((old) => !old)}
