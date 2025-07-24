@@ -10,6 +10,10 @@ import { GameConfigContext } from "./context/GameConfigContext.tsx";
 import type { Tile as TileType, QuestionSet } from "./types/types.tsx";
 import GuessSummary from "./components/GuessSummary.tsx";
 import Toast from "./components/Toast.tsx";
+import {
+  compressToEncodedURIComponent,
+  decompressFromEncodedURIComponent,
+} from "lz-string";
 
 //FIXME guessHistory array lacks keys
 //TODO add url params to save game state (nuqs)
@@ -47,9 +51,28 @@ function questionSetsToTile(qSets: QuestionSet[]): TileType[] {
 const initTileSet: TileType[] = questionSetsToTile(initQuestionSets);
 
 function App() {
+  //attempt to get state from URL params
+  const urlParams = new URLSearchParams(window.location.search);
+  const compressedState = urlParams.get("ID");
+  let urlState: { [key: string]: any } | null = null;
+  if (compressedState) {
+    //clear site url to remove params
+    window.history.replaceState({}, document.title, window.location.pathname);
+    try {
+      const decompressedState = decompressFromEncodedURIComponent(compressedState);
+      urlState = JSON.parse(decompressedState);
+
+    } catch (error) {
+      console.error("Failed to restore game state from URL:", error);
+    }
+  }
+
+
   //attempt to get state from localStorage
   const stateString = localStorage.getItem("gameState");
-  const gameState = stateString ? JSON.parse(stateString) : null;
+  const localState = stateString ? JSON.parse(stateString) : null;
+  //choose which state to use (prefer URL state if available)
+  const gameState = urlState || localState || null;
 
   //
   const [numQuestions, setNumQuestions] = useState(() =>
@@ -86,6 +109,24 @@ function App() {
     isVisible: false,
     message: "",
   });
+  function generateGameID(): string {
+    // Create a new game state (fresh game, not current progress)
+    const gameState = {
+      numQuestions,
+      numAnswers,
+      numLives,
+      lives: numLives,
+      tileSet: shuffleArray(questionSetsToTile(questionSets)),
+      solvedTiles: [],
+      guessHistory: [],
+      questionSets,
+    };
+    const stateString = JSON.stringify(gameState);
+    const compressedState = compressToEncodedURIComponent(stateString);
+    const IDUrl = `${window.location.origin}${window.location.pathname}?ID=${compressedState}`;
+    return IDUrl;
+  }
+
 
   // save to local storage on change
   useEffect(() => {
@@ -310,6 +351,23 @@ function App() {
                   onClick={() => setIsPlaying((old) => !old)}
                 >
                   <i className="fa-solid fa-gear"></i>
+                </button>
+                <button
+                  className="share-button"
+                  onClick={() => {
+                    const gameID = generateGameID();
+                    navigator.clipboard.writeText(gameID);
+                    setToastState({
+                      isVisible: true,
+                      message: "Game link copied to clipboard!",
+                    });
+                    setTimeout(
+                      () => setToastState({ isVisible: false, message: "" }),
+                      1200,
+                    );
+                  }}
+                >
+                  <i className="fa-solid fa-share"></i>
                 </button>
               </div>
             </div>
