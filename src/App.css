@@ -38,6 +38,11 @@
   margin-top: 0.5rem;
 }
 
+#button-container > * {
+  font-size: 1.15em;
+  padding: 1em 1.2em;
+}
+
 @media (max-width: 600px) {
   #root {
     padding: 0.5rem;
@@ -74,6 +79,8 @@
   }
 
   #button-container > * {
+    font-size: 1em;
+    padding: 0.8em 0.5em;
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
