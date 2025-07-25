@@ -371,7 +371,7 @@ function App() {
                     );
                   }}
                 >
-                  <i className="fa-solid fa-copy"></i> Copy Link Game
+                  <i className="fa-solid fa-copy"></i> Copy Game Link
                 </button>
               </div>
             </div>
