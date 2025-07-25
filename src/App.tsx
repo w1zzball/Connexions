@@ -60,7 +60,15 @@ function App() {
     window.history.replaceState({}, document.title, window.location.pathname);
     try {
       const decompressedState = decompressFromEncodedURIComponent(compressedState);
-      urlState = JSON.parse(decompressedState);
+      const truncatedState = JSON.parse(decompressedState);
+      // Create a new state object with necessary properties
+      urlState = {
+        ...truncatedState,
+        lives: truncatedState.numLives,
+        tileSet: shuffleArray(questionSetsToTile(truncatedState.questionSets)),
+        solvedTiles: [],
+        guessHistory: [],
+      };
 
     } catch (error) {
       console.error("Failed to restore game state from URL:", error);
@@ -115,10 +123,11 @@ function App() {
       numQuestions,
       numAnswers,
       numLives,
-      lives: numLives,
-      tileSet: shuffleArray(questionSetsToTile(questionSets)),
-      solvedTiles: [],
-      guessHistory: [],
+      //omitted to shorten URL
+      // lives: numLives,
+      // tileSet: shuffleArray(questionSetsToTile(questionSets)),
+      // solvedTiles: [],
+      // guessHistory: [],
       questionSets,
     };
     const stateString = JSON.stringify(gameState);
