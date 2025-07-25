@@ -17,7 +17,7 @@ import {
 
 //FIXME guessHistory array lacks keys
 //FIXME redo tile font size calculation
-//TODO add favicon
+//TODO improve favicon
 //TODO make row answers elipsis out or make it scrollable
 //TODO improve accessibility (ARIA labels, keyboard navigation, focus management)
 //TODO add animations for solved rows or transitions
