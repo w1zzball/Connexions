@@ -16,7 +16,7 @@ import {
 } from "lz-string";
 
 //FIXME guessHistory array lacks keys
-//FIXME redo tile font size calculation
+//TODO further reduce share URL length- remove excess object structure
 //TODO improve favicon
 //TODO make row answers elipsis out or make it scrollable
 //TODO improve accessibility (ARIA labels, keyboard navigation, focus management)
@@ -57,7 +57,8 @@ function App() {
     //clear site url to remove params
     window.history.replaceState({}, document.title, window.location.pathname);
     try {
-      const decompressedState = decompressFromEncodedURIComponent(compressedState);
+      const decompressedState =
+        decompressFromEncodedURIComponent(compressedState);
       const truncatedState = JSON.parse(decompressedState);
       // Create a new state object with necessary properties
       urlState = {
@@ -67,12 +68,10 @@ function App() {
         solvedTiles: [],
         guessHistory: [],
       };
-
     } catch (error) {
       console.error("Failed to restore game state from URL:", error);
     }
   }
-
 
   //attempt to get state from localStorage
   const stateString = localStorage.getItem("gameState");
@@ -96,15 +95,15 @@ function App() {
     gameState ? gameState.tileSet : shuffleArray(initTileSet),
   );
   const [selected, setSelected] = useState<TileType[]>([]);
-  const [solvedTiles, setSolvedTiles] = useState<TileType[][]>(
-    () => gameState ? gameState.solvedTiles : [],
+  const [solvedTiles, setSolvedTiles] = useState<TileType[][]>(() =>
+    gameState ? gameState.solvedTiles : [],
   );
-  const [guessHistory, setGuessHistory] = useState<TileType[][]>(
-    () => gameState ? gameState.guessHistory : [],
+  const [guessHistory, setGuessHistory] = useState<TileType[][]>(() =>
+    gameState ? gameState.guessHistory : [],
   );
   const [isPlaying, setIsPlaying] = useState(true);
-  const [questionSets, setQuestionSets] = useState(
-    () => gameState ? gameState.questionSets : initQuestionSets,
+  const [questionSets, setQuestionSets] = useState(() =>
+    gameState ? gameState.questionSets : initQuestionSets,
   );
   const [isShaking, setIsShaking] = useState(false);
   const shuffleTiles = (): void => {
@@ -133,7 +132,6 @@ function App() {
     const IDUrl = `${window.location.origin}${window.location.pathname}?ID=${compressedState}`;
     return IDUrl;
   }
-
 
   // save to local storage on change
   useEffect(() => {
@@ -354,9 +352,7 @@ function App() {
                   Submit
                 </button>
               </div>
-              <div
-                id="button-container-secondary"
-              >
+              <div id="button-container-secondary">
                 <button
                   className="settings-button "
                   onClick={() => setIsPlaying((old) => !old)}
