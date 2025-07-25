@@ -16,9 +16,7 @@ import {
 } from "lz-string";
 
 //FIXME guessHistory array lacks keys
-//TODO add url params to save game state (nuqs)
-//TODO add CTA to setup component
-//TODO add CTA to copy game link
+//FIXME redo tile font size calculation
 //TODO add favicon
 //TODO make row answers elipsis out or make it scrollable
 //TODO improve accessibility (ARIA labels, keyboard navigation, focus management)
