@@ -281,7 +281,7 @@ function App() {
         {isPlaying ? (
           <div id="game">
             <p id="game-dimension-text">
-              Make {toWords(numQuestions)} groups of {toWords(numAnswers)}!
+              Make {toWords(numQuestions)} group{numQuestions !== 1 ? "s" : ""} of {toWords(numAnswers)}!
             </p>
             <div id="play-area">
               {/* solved rows*/}
