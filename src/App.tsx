@@ -14,6 +14,7 @@ import {
   compressToEncodedURIComponent,
   decompressFromEncodedURIComponent,
 } from "lz-string";
+import { toWords } from "number-to-words"
 
 //FIXME guessHistory array lacks keys
 //TODO further reduce share URL length- remove excess object structure
@@ -279,6 +280,9 @@ function App() {
         <Toast isVisible={toastState.isVisible} message={toastState.message} />
         {isPlaying ? (
           <div id="game">
+            <p id="game-dimension-text">
+              Make {toWords(numQuestions)} groups of {toWords(numAnswers)}!
+            </p>
             <div id="play-area">
               {/* solved rows*/}
               <div style={{ marginBottom: "16px" }}>
