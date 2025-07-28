@@ -16,7 +16,6 @@ import {
 } from "lz-string";
 import { toWords } from "number-to-words"
 
-//FIXME guessHistory array lacks keys
 //TODO further reduce share URL length- remove excess object structure
 //TODO improve favicon
 //TODO make row answers elipsis out or make it scrollable
@@ -24,7 +23,8 @@ import { toWords } from "number-to-words"
 //TODO add animations for solved rows or transitions
 //TODO improve color picker UI and validate color contrast
 //TODO add instructions/help modal
-//TODO add dark/light theme
+//TODO add toast to alert to improper link import
+//TODO add light dark mode toggle button
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
