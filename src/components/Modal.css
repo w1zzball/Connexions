@@ -1,13 +1,14 @@
 .modal-content {
-  background-color: #121212;
-  color: #efefe6;
-  border: 3px solid #efefe6;
+  background-color: var(--modal-bg, #121212);
+  color: var(--modal-fg, #efefe6);
+  border: 3px solid var(--modal-border, #efefe6);
   border-radius: 5%;
   padding: 60px 90px;
   text-transform: uppercase;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .modal-backdrop {
@@ -16,8 +17,25 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--modal-backdrop, rgba(0, 0, 0, 0.5));
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 9999;
+}
+
+:root {
+  --modal-bg: #121212;
+  --modal-fg: #efefe6;
+  --modal-border: #efefe6;
+  --modal-backdrop: rgba(0, 0, 0, 0.5);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --modal-bg: #fff;
+    --modal-fg: #121212;
+    --modal-border: #121212;
+    --modal-backdrop: rgba(0, 0, 0, 0.18);
+  }
 }
