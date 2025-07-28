@@ -4,10 +4,11 @@ export default function GuessSummary({ guessHistory }: GuessSummaryProps) {
 
     return (
         <div className="guess-history">
-            {guessHistory.map(guess =>
-                <p className="guess-history-row">
-                    {guess.map(tile => (
+            {guessHistory.map((guess, guessIndex) =>
+                <p className="guess-history-row" key={guessIndex}>
+                    {guess.map((tile, tileIndex) => (
                         <span
+                            key={tileIndex}
                             style={{
                                 display: "inline-block",
                                 width: "1em",
