@@ -66,10 +66,15 @@ function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      style={{ position: "absolute", top: 10, right: 10, zIndex: 10000 }}
+      style={{ border: "none", position: "absolute", top: 10, right: 10, zIndex: 10000 }}
       aria-label="Toggle light/dark mode"
     >
-      {theme === "dark" ? <i className="fa-solid fa-sun"></i> : <i className="fa-solid fa-moon"></i>}
+      {theme === "dark" ? (
+        <i className="fa-regular fa-moon"></i>
+
+      ) : (
+        <i className="fa-solid fa-moon"></i>
+      )}
     </button>
   );
 }
