@@ -19,14 +19,14 @@
 
 /* Setup buttons styling */
 #setup button {
-  border-radius: 8px;
-  border: 1px solid transparent;
+  /* border-radius: 8px;
+  border: 1px solid transparent; */
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
-  color: #fff;
+  /* background-color: #1a1a1a;
+  color: #fff; */
   cursor: pointer;
   transition: border-color 0.25s, background 0.25s;
   margin: 0 2px;
@@ -34,7 +34,7 @@
   box-sizing: border-box;
 }
 
-#setup button:disabled {
+/* #setup button:disabled {
   background-color: #ccc;
   color: #666;
   cursor: not-allowed;
@@ -43,7 +43,7 @@
 #setup button:hover:not(:disabled) {
   border-color: #646cff;
   background-color: #23234a;
-}
+} */
 
 #setup button:focus,
 #setup button:focus-visible {
@@ -85,7 +85,7 @@
 
 /* Responsive adjustments for setup controls */
 @media (max-width: 600px) {
-  #setup>div {
+  #setup > div {
     flex-direction: column;
     gap: 8px;
     align-items: center;
