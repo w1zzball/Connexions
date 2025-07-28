@@ -49,6 +49,31 @@ function questionSetsToTile(qSets: QuestionSet[]): TileType[] {
 
 const initTileSet: TileType[] = questionSetsToTile(initQuestionSets);
 
+function ThemeToggle() {
+  const [theme, setTheme] = useState(() => {
+    // Check for saved theme or fall back to system
+    return localStorage.getItem("theme") ||
+      (window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light");
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  return (
+    <button
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      style={{ position: "absolute", top: 10, right: 10, zIndex: 10000 }}
+      aria-label="Toggle light/dark mode"
+    >
+      {theme === "dark" ? <i className="fa-solid fa-sun"></i> : <i className="fa-solid fa-moon"></i>}
+    </button>
+  );
+}
+
 function App() {
   //attempt to get state from URL params
   const urlParams = new URLSearchParams(window.location.search);
@@ -426,6 +451,7 @@ function App() {
             </button>
           </div>
         )}
+        <ThemeToggle />
       </>
     </GameConfigContext.Provider>
   );
