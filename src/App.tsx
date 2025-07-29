@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import "./App.css";
+import ThemeToggle from "./components/ThemeToggle.tsx";
 import Tile from "./components/Tile.tsx";
 import Row from "./components/Row.tsx";
 import Setup from "./components/Setup.tsx";
@@ -49,35 +50,7 @@ function questionSetsToTile(qSets: QuestionSet[]): TileType[] {
 
 const initTileSet: TileType[] = questionSetsToTile(initQuestionSets);
 
-function ThemeToggle() {
-  const [theme, setTheme] = useState(() => {
-    // Check for saved theme or fall back to system
-    return localStorage.getItem("theme") ||
-      (window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light");
-  });
 
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
-  return (
-    <button
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      style={{ background: "none", border: "none", position: "absolute", top: 0, right: 0, zIndex: 10000 }}
-      aria-label="Toggle light/dark mode"
-    >
-      {theme === "dark" ? (
-        <i className="fa-regular fa-moon"></i>
-
-      ) : (
-        <i className="fa-solid fa-moon"></i>
-      )}
-    </button>
-  );
-}
 
 function App() {
   //attempt to get state from URL params

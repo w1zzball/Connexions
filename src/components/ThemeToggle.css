@@ -1,0 +1,8 @@
+#theme-toggle-button {
+    background: none;
+    border: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10000;
+}
