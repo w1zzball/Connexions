@@ -24,18 +24,17 @@
   z-index: 9999;
 }
 
-:root {
+:root[data-theme="dark"] {
   --modal-bg: #121212;
   --modal-fg: #efefe6;
   --modal-border: #efefe6;
   --modal-backdrop: rgba(0, 0, 0, 0.5);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --modal-bg: #fff;
-    --modal-fg: #121212;
-    --modal-border: #121212;
-    --modal-backdrop: rgba(0, 0, 0, 0.18);
-  }
+:root[data-theme="light"] {
+  --modal-bg: #fff;
+  --modal-fg: #121212;
+  --modal-border: #121212;
+  --modal-backdrop: rgba(0, 0, 0, 0.18);
+}
 }
