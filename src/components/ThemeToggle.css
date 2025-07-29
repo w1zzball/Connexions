@@ -6,3 +6,10 @@
     right: 0;
     z-index: 10000;
 }
+
+#theme-toggle-button:focus,
+#theme-toggle-button:active {
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
